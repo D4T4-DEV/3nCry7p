@@ -44,20 +44,37 @@ passport.use(new LocalStrategy({
   usernameField: 'username',
   passwordField: 'contrasenia',
 },
-  (username, contrasenia, done) => {
+  async (username, contrasenia, done) => {
     // ASPECTOS QUE HARA LA VERIFICACION
+    try {
+      const usuario = await getUserForUserName(username); // Obtenemos el usuario si es que existe en la DB
+      if (!usuario) {
+        return done(null, false, { message: 'Usuario incorrecto.' });
+      }
+      const passwordMatch = await compareHash(contrasenia, usuario.pwd_hash);
+      if (!passwordMatch) {
+        return done(null, false, { message: 'Contraseña incorrecta.' });
+      }
+      return done(null, usuario);
+    } catch (error) {
+      
+    }
     
   }
 ));
 
 // Serializacion del usuario
 passport.serializeUser((user, done) => {
-  done(null, user.username);
+  done(null, user.id);
 });
 
 // Deserializacion
-passport.deserializeUser((username, done) => {
-  done(null, { username: username });
+passport.deserializeUser(async (id, done) => {
+  await getUserForID(id).then((user) => {
+    done(null, user);
+  }).catch((error) => {
+    done(error, null);
+  });
 });
 
 // Configuración de la plantilla Pug
