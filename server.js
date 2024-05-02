@@ -35,6 +35,33 @@ app.use(session({
   //store: -> Esto lo podemos poner para poder guardar las sesion en un lugar por el momento no
 }));
 
+// Configurar Passport.js
+app.use(passport.initialize());
+app.use(passport.session());
+
+// CONFIGURACION DE PASSPORT para tokens
+passport.use(new LocalStrategy(
+  (username, contrasenia, done)=>{
+    // ASPECTOS QUE HARA LA VERIFICACION
+    if(username === "admin" && contrasenia === "123"){
+      return done(null, {username: "admin"});
+    }else{
+      return done(null, false, {message: "Credenciales incorrectas"});
+    }
+
+  }
+));
+
+// Serializacion del usuario
+passport.serializeUser((user, done)=>{
+  done(null, user.username);
+});
+
+// Deserializacion
+passport.deserializeUser((username, done)=>{
+  done(null, {username: username});
+});
+
 // Configuración de la plantilla Pug
 app.set('view engine', 'pug');
 // Hace accesible las vistas (codigo PUG) al server, indicandole la ruta construida por __dirname y concatenando "Views"
@@ -47,11 +74,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true })); // Aceptar Cadenas o arreglos
 app.use(express.json()); // -> Entender datos en Formato JSON
 
-// Configurar Passport.js
-app.use(passport.initialize());
-app.use(passport.session());
 
-// CONFIGURACION DE PASSPORT para tokens
 
 
 //Rutas 

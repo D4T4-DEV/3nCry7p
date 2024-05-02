@@ -6,16 +6,14 @@ const passport = require('passport');
 const {generateToken} = require('../../Models/autenticacion/autenticacion')
 
 
-router.post('/', passport.authenticate('local', {
-    failureRedirect: '/login',
-}), async (req, res) => {
-    // Si se autentica correctamente, crea un token JWT
-    const token = generateToken(req.user.id);
+router.post('/', async (req, res) => {
 
-    res.cookie('token', token, { httpOnly: true, secure: false });
-
-    res.redirect('/');
+    const { username, contrasenia} = req.body; // Obtiene el valor de los formularios
+    console.log(username)
+    console.log(contrasenia)
+    res.redirect("/iniciar-sesion")
 });
+
 
 
 module.exports = router;
