@@ -1,0 +1,143 @@
+.contenedor-general, .contenedor-general-dos
+  font-family: "Roboto", sans-serif
+  color: #FFFF
+  background-color: #2c313c 
+  padding: 20px
+  border-radius: 8px
+  width: 100%
+  margin: 0 auto
+  display: flex
+  flex-direction: column
+  justify-content: center
+  max-width: 500px
+  margin-bottom: 15px
+
+.form-text
+    display: flex
+    flex-direction: column
+    align-content: center
+
+.text-area-contenedor, .text-area-contenedor-encriptado
+    display: flex
+
+.text-area-contenedor-encriptado
+    padding-top: 8px
+
+#textarea-encrip, #textarea-encrip-dos
+    background-color: transparent
+    height: 300px
+    width: 100%
+    resize: none
+    color: #FFFF
+    font-family: "Roboto", sans-serif
+    font-size: 15px
+    border: 1px solid #FFFF
+    border-radius: 5px
+    padding: 10px
+    letter-spacing: 0.1em
+    overflow-x: hidden
+
+#textarea-encrip, #textarea-encrip-dos
+    &::-webkit-scrollbar
+        width: 8px
+
+#textarea-encrip, #textarea-encrip-dos
+    &::-webkit-scrollbar-thumb
+        background: rgb(255,255 ,255, .15 )
+        border-radius: 5px
+
+.etiqueta-form
+    padding-top: 8px
+    padding-bottom: 8px
+
+.etiqueta-texto-encriptado
+    padding-top: 8px
+    padding-bottom: 15px
+
+
+#metodo-encriptacion, #desplazamiento-encript, #idiom-encript, #idiom-encript-vigenere
+    border-radius: 5px
+    border: solid #FFFF
+    font-family: "Kanit", sans-serif
+    font-size: 14px
+    letter-spacing: 0.2em
+
+.opcion
+    letter-spacing: 0.2em
+
+.opcion:hover
+    background-color: #f70707
+
+.contenedorBoton 
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+
+.contenedorOpciones, .contenedorOpciones-vigenere 
+    display: none
+    flex-direction: column
+    justify-content: center
+
+.contenedorBoton 
+    padding-top: 10px
+    display: flex
+    flex-direction: column
+    justify-content: center
+
+.enviar-btn
+    font-family: "Kanit", sans-serif
+    font-size: 16px
+    background-color: #61dafb
+    color: #282c37
+    padding: 10px
+    border: none
+    border-radius: 4px
+    cursor: pointer
+    transition: background-color 0.3s ease-in-out
+
+.enviar-btn:hover
+    background-color: #90caf9
+
+#restante
+    display: flex
+    flex-direction: row-reverse
+    font-size: 12px
+    font-weight: bolder
+    margin-top: 4px
+
+#restante-key
+    display: flex
+    flex-direction: row-reverse
+    font-size: 12px
+    font-weight: bolder
+
+#key
+    font-family: "Kanit", sans-serif
+    width: auto
+    padding: 1.5%
+    margin-bottom: 8px
+    border: 1px solid #61dafb
+    border-radius: 4px
+    transition: border-color 0.3s ease-in-out
+    color: #282c37
+    font-size: 13px
+
+
+//Media Querys
+
+//Dispositivos moviles
+@media only screen and (max-width: 600px)
+    .contenedor-general, .contenedor-general-dos
+        max-width: 90%
+        margin-bottom: 10px
+        
+// Tabletas 
+@media only screen and (min-width: 601px) and (max-width: 1024px)
+    .contenedor-general, .contenedor-general-dos
+        max-width: 80%
+
+// Desktops
+@media only screen and (min-width: 1025px)
+    .contenedor-general, .contenedor-general-dos
+        max-width: 580px

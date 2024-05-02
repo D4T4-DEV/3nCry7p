@@ -1,0 +1,146 @@
+extends layout
+
+block content
+        .contenedor-general 
+            h1(class="etiqueta-form") Texto a encriptar 👻💀
+            form(action="/procesar-encriptacion", method="post", class="form-text") 
+                .text-area-contenedor
+                    textarea(name="texto_a_Encriptar", id='textarea-encrip' maxlength="3000" placeholder="Aquí va tu texto...📝📝" required)=texto_a_Encriptar
+                p#restante
+                    if(tamanioTexto)
+                        | #{tamanioTexto}/3000
+                    else
+                        | 0/3000
+
+                label(for="metodo-encriptacion" class="etiqueta-form") ¿Qué modo encriptaré? 👻💀
+                select(name="metodosEncriptaciones", id="metodo-encriptacion" required) 
+                    option(value="0" class='opcion') Selecciona
+                    option(value="cesar" class='opcion') Cesar
+                    option(value="vigenere" class='opcion') Vigenere
+                    option(value="hex" class='opcion') Hexadecimal
+                    option(value="base64" class='opcion') Base 64 
+
+                .contenedorOpciones 
+                    label(for="idiom-encript" class="etiqueta-form") ¿En qué idioma?
+
+                    select(name="idiomasCesar", id="idiom-encript") 
+                        option(value="0" class='opcion') Selecciona un idioma.
+                        option(value="ES" class='opcion') ES 
+                        option(value="EN" class='opcion') EN
+
+                    label(for="desplazamiento-encript" class="etiqueta-form") ¿Cuántos desplazamientos?
+                    select(name="desplazamientos", id="desplazamiento-encript") 
+                        option(value="-1" class='opcion') Selecciona antes un idioma
+
+                .contenedorOpciones-vigenere 
+                    label(for="idiom-encript" class="etiqueta-form") ¿En qué idioma?
+
+                    select(name="idiomasVigenere", id="idiom-encript-vigenere") 
+                        option(value="0" class='opcion') Selecciona un idioma.
+                        option(value="ES" class='opcion') ES 
+                        option(value="EN" class='opcion') EN
+
+                    label(for="desplazamiento-encript" class="etiqueta-form") Ingresa la llave de cifrado
+                                                                                                            //- Este script convierte a mayuscula los datos
+                    input(type="text", placeholder="Key", id="key", name="key", class="key" maxlength="10" oninput="this.value = this.value.toUpperCase()")
+                    p#restante-key 0/10
+
+                .contenedorBoton 
+                    button(type="submit", class="enviar-btn") 3nCry7pt4R
+
+        if textoEncriptado
+            .contenedor-general-dos
+                h1(class="etiqueta-texto-encriptado") Texto encriptado 💀🏴‍☠️
+                    .text-area-contenedor-encriptado
+                        textarea(name="textoEncriptado", readonly="readonly" id='textarea-encrip-dos' placeholder="Aquí estará tu texto...📝📝")=textoEncriptado
+        if aviso
+            div#snackbar
+                | #{aviso}
+                script.
+                    const x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
+
+        script.
+
+            // metodo para contadar los caracteres del TextArea en funcion de lo que se escriba
+            document.getElementById('textarea-encrip').addEventListener('input', function() {
+                var caracteresUtilzados = this.value.length; // Obtenemos el valor de longitud de caracteres hallados en el textarea
+                document.getElementById('restante').textContent = caracteresUtilzados + "/3000";
+            });
+
+            // metodo para contadar los caracteres del inputKey en funcion de lo que se escriba
+            document.getElementById('key').addEventListener('input', function() {
+                var caracteresUtilzados = this.value.length; // Obtenemos el valor de longitud de caracteres hallados en el textarea
+                document.getElementById('restante-key').textContent = caracteresUtilzados + "/10";
+            });
+
+            // Metodo para mostrar las opciones necesarias para el metodo CESAR
+            const metodo = document.getElementById("metodo-encriptacion")
+            document.getElementById("metodo-encriptacion").addEventListener("change", function() {
+                var metodo = this.value; // Obtenemos el valor del input de "metodo-encriptacion" para saber si mostramos los otros medios o no
+                if (metodo === "cesar") {
+                    // Medio para poder mostrar las opciones del codigo CESAR
+                    document.getElementById("idiom-encript").parentNode.style.display = "flex";
+                    document.getElementById("desplazamiento-encript").parentNode.style.display = "flex";
+                } else {
+                    // Medio para ocultar las opciones del codigo CESAR
+                    document.getElementById("idiom-encript").parentNode.style.display = "none"; // Tomamos la referencia del objeto y luego de su padre y le asignamos un estilo
+                    document.getElementById("desplazamiento-encript").parentNode.style.display = "none";
+                    
+                    // Medio para poder seleccionar en caso de no ser visible las opciones del codigo CESAR
+                    document.getElementById("idiom-encript").value = "0";
+                }
+
+                if (metodo === "vigenere") {
+                    // Medio para poder mostrar las opciones del codigo vigenere
+                    document.getElementById("idiom-encript-vigenere").parentNode.style.display = "flex";
+                    document.getElementById("key").parentNode.style.display = "flex";
+                    document.getElementById("key").setAttribute("required", "required"); // Lo hace requisito
+                } else {
+
+                    document.getElementById("key").parentNode.style.display = "none";
+                    document.getElementById("idiom-encript-vigenere").parentNode.style.display = "none";
+                    // Medio para poder seleccionar en caso de no ser visible las opciones del codigo vigenere
+                    document.getElementById("idiom-encript-vigenere").value = "0";
+                    document.getElementById("key").value = "";
+                    document.getElementById("key").removeAttribute("required"); // Le quita cuando no se muestra el requisito
+                }
+            });
+
+            // Metodo para crear de manera dinamica las opciones del metodo CESAR (DESPLAZAMIENTOS)
+            const idioma = document.getElementById("idiom-encript");
+            const desplazamientos = document.getElementById("desplazamiento-encript");
+            idioma.addEventListener("change", function() {
+                var optionLangauje = this.value;
+
+                // Elimina las opciones existentes
+                if(optionLangauje === "0"){
+                    desplazamientos.innerHTML = ''; //- Elimina los elementos creados
+                    desplazamientos.innerHTML = `<option value="-1" class='opcion'>Selecciona antes un idioma</option>`;
+                }else{
+                    desplazamientos.innerHTML = ''; //- Elimina los elementos creados
+                    desplazamientos.innerHTML = `<option value="-1" class='opcion'>Selecciona el desplazamiento</option>`;
+                }
+                
+                if (optionLangauje === "ES") {
+                    for(var i = 0; i<27; i++){
+                        var opcion = document.createElement("option");
+                        opcion.value = i;
+                        opcion.textContent = i;
+                        opcion.class = "opcion";
+                        desplazamientos.appendChild(opcion);
+                    }
+                }
+
+                if (optionLangauje === "EN") {
+                    for(var i = 0; i<26; i++){
+                        var opcion = document.createElement("option");
+                        opcion.value = i;
+                        opcion.textContent = i;
+                        opcion.class = "opcion";
+                        desplazamientos.appendChild(opcion);
+                    }
+                }
+                
+            });

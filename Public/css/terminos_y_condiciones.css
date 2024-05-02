@@ -1,0 +1,56 @@
+.container {
+  font-family: "Kanit", sans-serif;
+  color: white;
+  background-color: #373d4b;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.btn {
+  font-family: "Kanit", sans-serif;
+  font-size: 16px;
+  background-color: #61dafb;
+  color: #282c37;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 15px;
+}
+
+.btn:hover {
+  background-color: #90caf9;
+}
+
+.titulo {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  color: #61dafb;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    max-width: 420px;
+    width: 90%;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    max-width: 80%;
+  }
+}
+@media only screen and (min-width: 1025px) {
+  .container {
+    max-width: 30%;
+  }
+}
+
+/*# sourceMappingURL=terminos_y_condiciones.css.map */

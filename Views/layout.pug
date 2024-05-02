@@ -1,0 +1,26 @@
+// Medio que se reutiliza entre las diferentes vistas 
+doctype html
+html(lang="es")
+    head 
+        title #{tituloPagina}
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel='stylesheet', href='/css/global.css')
+        link(rel='stylesheet', href='/css/index.css')
+        link(rel='stylesheet', href='/css/navbar.css')
+        link(rel="stylesheet", href="/css/notificacion.css")
+    body 
+            .contenedorNavBar
+                nav#navbar
+                    ol#ol-navbar
+                        //- li.li-navbar-no-enlace Pruebas restantes: 3
+                        li.li-navbar-no-enlace  Markitong19
+                        li.li-navbar
+                            a.enlace(href="#") Historial 3nCry7pt4C10n
+                        li.li-navbar
+                            a.enlace(href="#") Cerrar sesión 
+                        //- li.li-navbar
+                        //-     a.enlace(href="#") Iniciar sesión
+        
+
+            block content
