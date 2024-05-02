@@ -6,14 +6,18 @@ const passport = require('passport');
 const {generateToken} = require('../../Models/autenticacion/autenticacion')
 
 
-router.post('/', async (req, res) => {
+// router.post('/', async (req, res) => {
 
-    const { username, contrasenia} = req.body; // Obtiene el valor de los formularios
-    console.log(username)
-    console.log(contrasenia)
-    res.redirect("/iniciar-sesion")
-});
+//     const { username, password} = req.body; // Obtiene el valor de los formularios
+//     console.log(username)
+//     console.log(password)
+//     res.redirect("/iniciar-sesion")
+// });
 
-
+router.post('/', passport.authenticate('local', {
+    failureRedirect: '/login',
+  }), async (req, res) => {
+    res.redirect('/');
+  });
 
 module.exports = router;

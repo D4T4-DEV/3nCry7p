@@ -17,10 +17,10 @@ const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
 // Metodos de DB
-const {getUserForUserName, getUserForID} = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
+const { getUserForUserName, getUserForID } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
 // Metodo de cifrado
-const {compareHash} = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method')
+const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method')
 
 // MIDDLEWARES
 
@@ -40,26 +40,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // CONFIGURACION DE PASSPORT para tokens
-passport.use(new LocalStrategy(
-  (username, contrasenia, done)=>{
+passport.use(new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'contrasenia',
+},
+  (username, contrasenia, done) => {
     // ASPECTOS QUE HARA LA VERIFICACION
-    if(username === "admin" && contrasenia === "123"){
-      return done(null, {username: "admin"});
-    }else{
-      return done(null, false, {message: "Credenciales incorrectas"});
-    }
-
+    
   }
 ));
 
 // Serializacion del usuario
-passport.serializeUser((user, done)=>{
+passport.serializeUser((user, done) => {
   done(null, user.username);
 });
 
 // Deserializacion
-passport.deserializeUser((username, done)=>{
-  done(null, {username: username});
+passport.deserializeUser((username, done) => {
+  done(null, { username: username });
 });
 
 // Configuración de la plantilla Pug
