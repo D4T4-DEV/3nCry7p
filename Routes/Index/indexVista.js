@@ -10,10 +10,6 @@ const {authenticate} = require("../../Models/autenticacion/autenticacion");
 // Ruta de renderizado de la vista 
 router.get('/', async (req, res) => {
 
-    // Comprobamos los intentos ya realizados
-    if(req.session.pruebasRestantes >= 4){
-        return authenticate(req, res);
-    }
     // Obtenemos
     var pruebas = req.session.pruebasRestantes;
     var aviso = req.session.aviso;
@@ -21,6 +17,7 @@ router.get('/', async (req, res) => {
     var tamanioTexto = req.session.tamanioTexto;
     var textoEncriptado = req.session.textoEncriptado;
     var usuario= req.session.USER_NAME;
+    var avisoCerrarSesion = req.session.avisoCerrarSesion;
 
 
     res.render('index', { 
@@ -30,7 +27,9 @@ router.get('/', async (req, res) => {
     texto_a_Encriptar: texto_a_Encriptar,
     tamanioTexto: tamanioTexto, 
     textoEncriptado: textoEncriptado, 
-    aviso: aviso});
+    aviso: aviso,
+    avisoCerrarSesion: avisoCerrarSesion
+    });
 });
 
 

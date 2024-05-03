@@ -24,7 +24,7 @@ const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
 
 // Variable de aviso para el login
 var avisoLogin = undefined;
-var pruebasRestantes = 0;
+var avisoCerrarSesion = undefined;
 
 // MIDDLEWARES
 
@@ -51,14 +51,16 @@ passport.use(new LocalStrategy({
 },
   async (username, contrasenia, done) => {
     // ASPECTOS QUE HARA LA VERIFICACION
-    
+
     try {
+      
       const user = await getUserForUserName(username); // Obtenemos el usuario si es que existe en la DB
       if (!user) {
         avisoLogin = "Por favor verifica las credenciales ingresadas";
         console.log("Se ha experimentado este error: " + "Usuario incorrecto" + "\n");
         return done(null, false);
       }
+
       // Comparamos la contraseña
       const passwordMatch = await compareHash(contrasenia, user.pwd_hash);
       if (!passwordMatch) {
@@ -96,30 +98,52 @@ passport.deserializeUser(async (id, done) => {
 });
 
 // Middleware personalizado para variables de sesion y cookies
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
 
   // Creacion de la variable intentos
-  if(!req.session.pruebasRestantes && !req.session.USER_NAME){
+  if (!req.session.pruebasRestantes && !req.session.USER_NAME) {
     req.session.pruebasRestantes = 0;
   }
+
+  req.session.avisoCerrarSesion = avisoCerrarSesion;
+  avisoCerrarSesion = undefined;
 
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
-  
 
   next(); // Damos paso a la ejecucion de otros middlewares
 });
 
 // Middleware de contador:
-app.use((req, res, next)=>{
-  // const id = req.session.ID_USER;
-  // const nombreUsuario = req.session.USER_NAME;
+app.use((req, res, next) => {
+  const id = req.session.ID_USER;
+  const nombreUsuario = req.session.USER_NAME;
   // console.log("DATO USUARIO ID DEL MIDDLEWARE: " + id);
   // console.log("DATO USUARIO DEL MIDDLEWARE: " + nombreUsuario);
   next();
 });
 
+
+//Medio para poder cerrar sesión
+app.get('/cerrar-sesion', async (req, res) => {
+  await req.logout(async (err) => {
+    if (err) {
+      avisoCerrarSesion = "Error al cerrar sesión, por favor intentelo nuevamente..."
+      console.error('Error al cerrar la sesión:', err + "STATUS: 500");
+    }
+    await req.session.destroy((err) => {
+      if (err) {
+        console.error('Error al destruir la sesión:', err + "STATUS: 500");
+        avisoCerrarSesion = "Error al cerrar sesión, por favor intentelo nuevamente..."
+      }
+      console.log('req.session.destroy finalizado correctamente');
+      avisoCerrarSesion = "Se ha cerrado sesión";
+    });
+    res.clearCookie('token');
+    res.redirect('/'); // Redirigir a la página principal u otra página de tu elección
+  });
+});
 
 
 // Configuración de la plantilla Pug
@@ -133,8 +157,6 @@ app.use(express.static('public'));
 // Middleware para poder obtener el contenido de las solicitudes POST en formularios
 app.use(express.urlencoded({ extended: true })); // Aceptar Cadenas o arreglos
 app.use(express.json()); // -> Entender datos en Formato JSON
-
-
 
 
 //Rutas 

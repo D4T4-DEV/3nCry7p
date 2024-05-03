@@ -23,6 +23,7 @@ const SignUpRegister = require('./SignUp/registrar');
 // Ruta para terminos y condiciones 
 const terminos_y_condicionesView = require('./Terminos_y_Condiciones/terminos_y_condiciones');
 
+
 // CONFIGURACIÓN DE RUTAS
 
 // Configuracion index

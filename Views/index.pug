@@ -53,9 +53,8 @@ block content
                 h1(class="etiqueta-texto-encriptado") Texto encriptado 💀🏴‍☠️
                     .text-area-contenedor-encriptado
                         textarea(name="textoEncriptado", readonly="readonly" id='textarea-encrip-dos' placeholder="Aquí estará tu texto...📝📝")=textoEncriptado
-        if aviso
-            div#snackbar
-                | #{aviso}
+        if aviso || avisoCerrarSesion
+            div#snackbar= aviso || avisoCerrarSesion
                 script.
                     const x = document.getElementById("snackbar");
                     x.className = "show";

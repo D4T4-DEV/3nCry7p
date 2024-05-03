@@ -11,14 +11,9 @@ const BASE_SESENTA_Y_CUATRO = require('../../Models/Encriptaciones/encryptBaseSe
 const {loadEncryptBD} = require('../../Database/Acciones_DB/EncriptacionesCargaDB/cargaEncriptacionesDB');
 const {authenticate} = require("../../Models/autenticacion/autenticacion");
 
-router.post('/', async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
     // Variables obtenidas del body
     const { texto_a_Encriptar, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key } = req.body; // Obtiene el valor de los formularios
-
-    // Comprobamos los intentos ya realizados
-        if(req.session.pruebasRestantes >= 4){
-            return authenticate(req, res);
-        }
 
     try {
         switch (metodosEncriptaciones) {
