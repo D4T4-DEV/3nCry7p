@@ -17,6 +17,7 @@ router.get('/', (req, res) => {
     var aviso = req.session.aviso;
     delete req.session.aviso;
 
+
     res.render('login', { tituloPagina: 'Iniciar sesión', aviso: aviso, avisoLogin: avisoLogin});
 });
 

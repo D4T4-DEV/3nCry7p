@@ -9,11 +9,16 @@ const BASE_SESENTA_Y_CUATRO = require('../../Models/Encriptaciones/encryptBaseSe
 
 // Importacion de metodos de la BD
 const {loadEncryptBD} = require('../../Database/Acciones_DB/EncriptacionesCargaDB/cargaEncriptacionesDB');
-
+const {authenticate} = require("../../Models/autenticacion/autenticacion");
 
 router.post('/', async (req, res) => {
     // Variables obtenidas del body
     const { texto_a_Encriptar, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key } = req.body; // Obtiene el valor de los formularios
+
+    // Comprobamos los intentos ya realizados
+        if(req.session.pruebasRestantes >= 4){
+            return authenticate(req, res);
+        }
 
     try {
         switch (metodosEncriptaciones) {
@@ -38,7 +43,7 @@ router.post('/', async (req, res) => {
                 console.log(CESAR.encripytCesar(texto_a_Encriptar, desplazamientos))
 
                 // await loadEncryptBD();
-    
+                analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
     
@@ -64,6 +69,9 @@ router.post('/', async (req, res) => {
                     req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
                     return res.redirect('/');
                 }
+                
+                analizarPruebasRestantes(req, res);
+
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
     
@@ -78,6 +86,8 @@ router.post('/', async (req, res) => {
                 break;
     
             case "hex":
+                analizarPruebasRestantes(req, res);
+
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
     
@@ -87,10 +97,13 @@ router.post('/', async (req, res) => {
     
                 req.session.textoEncriptado = HEX.encripytHex(texto_a_Encriptar);
                 console.log(HEX.encripytHex(texto_a_Encriptar));
+                
                 res.redirect('/');
                 break;
     
             case "base64":
+                analizarPruebasRestantes(req, res);
+
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
     
@@ -120,6 +133,12 @@ router.post('/', async (req, res) => {
 
 });
 
+function analizarPruebasRestantes(req, res){
+    if(!req.session.USER_NAME){
+        // Si no existe una variable de sesion de ussa
+        return req.session.pruebasRestantes++;
+    }
+}
 module.exports = router;
 
 

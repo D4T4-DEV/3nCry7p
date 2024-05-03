@@ -13,14 +13,17 @@ html(lang="es")
             .contenedorNavBar
                 nav#navbar
                     ol#ol-navbar
-                        //- li.li-navbar-no-enlace Pruebas restantes: 3
-                        li.li-navbar-no-enlace  Markitong19
-                        li.li-navbar
-                            a.enlace(href="#") Historial 3nCry7pt4C10n
-                        li.li-navbar
-                            a.enlace(href="#") Cerrar sesión 
-                        //- li.li-navbar
-                        //-     a.enlace(href="#") Iniciar sesión
+                        if !usuario
+                            li.li-navbar-no-enlace Pruebas restantes: #{3 - restante}
+                        if usuario
+                            li.li-navbar-no-enlace  #{usuario}
+                            li.li-navbar
+                                a.enlace(href="#") Historial 3nCry7pt4C10n
+                            li.li-navbar
+                                a.enlace(href="#") Cerrar sesión 
+                        if !usuario
+                            li.li-navbar
+                                a.enlace(href="/iniciar-sesion") Iniciar sesión
         
 
             block content

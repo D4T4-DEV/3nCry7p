@@ -7,6 +7,8 @@ async function authenticate(req, res, next) {
     // Verifica si hay un token en las cookies de la solicitud
     const token = req.cookies.token;
 
+    console.log("Token " + token)
+
     // Si no hay token, redirige al usuario al login
     if (!token) {
         return res.redirect('/iniciar-sesion');
@@ -27,7 +29,7 @@ async function authenticate(req, res, next) {
 // Generar un toquen con JTW
 function generateToken(userId) {
     // Crea un token con el ID de usuario y una clave secreta
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
 }
 
 module.exports = {

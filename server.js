@@ -24,6 +24,7 @@ const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
 
 // Variable de aviso para el login
 var avisoLogin = undefined;
+var pruebasRestantes = 0;
 
 // MIDDLEWARES
 
@@ -94,20 +95,28 @@ passport.deserializeUser(async (id, done) => {
   });
 });
 
-// Middleware personalizado para variables de sesion
+// Middleware personalizado para variables de sesion y cookies
 app.use((req, res, next)=>{
+
+  // Creacion de la variable intentos
+  if(!req.session.pruebasRestantes && !req.session.USER_NAME){
+    req.session.pruebasRestantes = 0;
+  }
+
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
+  
+
   next(); // Damos paso a la ejecucion de otros middlewares
 });
 
 // Middleware de contador:
 app.use((req, res, next)=>{
-  const id = req.session.ID_USER;
-  const nombreUsuario = req.session.USER_NAME;
-  console.log("DATO USUARIO ID DEL MIDDLEWARE: " + id);
-  console.log("DATO USUARIO DEL MIDDLEWARE: " + nombreUsuario);
+  // const id = req.session.ID_USER;
+  // const nombreUsuario = req.session.USER_NAME;
+  // console.log("DATO USUARIO ID DEL MIDDLEWARE: " + id);
+  // console.log("DATO USUARIO DEL MIDDLEWARE: " + nombreUsuario);
   next();
 });
 
