@@ -12,6 +12,11 @@ router.post('/', passport.authenticate('local', {
 
   // Generamos un token de dada la sesion del usuario que debio autenticarse e existir en DB
   const tokenGenerado = generateToken(req.user.id);
+
+  // Creamos variables de la nueva sesion que contengan ese valor
+  req.session.ID_USER = req.user.id;
+  req.session.USER_NAME = req.user.user_name;
+
   res.cookie('token', tokenGenerado, { httpOnly: true, secure: false });
   res.redirect('/');
 });

@@ -16,9 +16,6 @@ const LocalStrategy = require('passport-local').Strategy;
 // CookieParser
 const cookieParser = require('cookie-parser');
 
-// MYSQL-Session
-const MySQLStore = require('express-mysql-session')(session);
-
 // Metodos de DB
 const { getUserForUserName, getUserForID } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
@@ -76,8 +73,8 @@ passport.use(new LocalStrategy({
       avisoLogin = "Estamos experimentando problemas, por favor intentalo más tarde...";
 
       // Aspecto para el BACK
-      console.log("Se ha experimentado este error: " + error + "\n");
-      console.log("Posible falla → DB SERVER NO ESTA EN LINEA");
+      console.log("Se ha experimentado este error: " + error);
+      console.log("Posible falla → DB SERVER NO ESTA EN LINEA" + "\n");
       return done(null, false); // Manejamos este error por consola debido a que si no esta el server la aplicacion muere
     }
   }
@@ -97,14 +94,23 @@ passport.deserializeUser(async (id, done) => {
   });
 });
 
-// Middleware personalizado
+// Middleware personalizado para variables de sesion
 app.use((req, res, next)=>{
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
-
   next(); // Damos paso a la ejecucion de otros middlewares
 });
+
+// Middleware de contador:
+app.use((req, res, next)=>{
+  const id = req.session.ID_USER;
+  const nombreUsuario = req.session.USER_NAME;
+  console.log("DATO USUARIO ID DEL MIDDLEWARE: " + id);
+  console.log("DATO USUARIO DEL MIDDLEWARE: " + nombreUsuario);
+  next();
+});
+
 
 
 // Configuración de la plantilla Pug
