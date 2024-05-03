@@ -16,13 +16,20 @@ const LocalStrategy = require('passport-local').Strategy;
 // CookieParser
 const cookieParser = require('cookie-parser');
 
+// MYSQL-Session
+const MySQLStore = require('express-mysql-session')(session);
+
 // Metodos de DB
 const { getUserForUserName, getUserForID } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
 // Metodo de cifrado
-const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method')
+const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
+
+// Variable de aviso para el login
+var avisoLogin = undefined;
 
 // MIDDLEWARES
+
 
 // Middleware para gestionar las cookies
 app.use(cookieParser());
@@ -46,25 +53,38 @@ passport.use(new LocalStrategy({
 },
   async (username, contrasenia, done) => {
     // ASPECTOS QUE HARA LA VERIFICACION
-    try {
-      const usuario = await getUserForUserName(username); // Obtenemos el usuario si es que existe en la DB
-      if (!usuario) {
-        return done(null, false, { message: 'Usuario incorrecto.' });
-      }
-      const passwordMatch = await compareHash(contrasenia, usuario.pwd_hash);
-      if (!passwordMatch) {
-        return done(null, false, { message: 'Contraseña incorrecta.' });
-      }
-      return done(null, usuario);
-    } catch (error) {
-      
-    }
     
+    try {
+      const user = await getUserForUserName(username); // Obtenemos el usuario si es que existe en la DB
+      if (!user) {
+        avisoLogin = "Por favor verifica las credenciales ingresadas";
+        console.log("Se ha experimentado este error: " + "Usuario incorrecto" + "\n");
+        return done(null, false);
+      }
+      // Comparamos la contraseña
+      const passwordMatch = await compareHash(contrasenia, user.pwd_hash);
+      if (!passwordMatch) {
+        avisoLogin = "Por favor verifica las credenciales ingresadas";
+        console.log("Se ha experimentado este error: " + "Contraseña incorrecta" + "\n");
+        return done(null, false);
+      }
+
+      // Si todo va bien, devolvemos el arreglo de la DB 
+      return done(null, user);
+    } catch (error) {
+
+      avisoLogin = "Estamos experimentando problemas, por favor intentalo más tarde...";
+
+      // Aspecto para el BACK
+      console.log("Se ha experimentado este error: " + error + "\n");
+      console.log("Posible falla → DB SERVER NO ESTA EN LINEA");
+      return done(null, false); // Manejamos este error por consola debido a que si no esta el server la aplicacion muere
+    }
   }
 ));
 
 // Serializacion del usuario
-passport.serializeUser((user, done) => {
+passport.serializeUser(async (user, done) => {
   done(null, user.id);
 });
 
@@ -76,6 +96,16 @@ passport.deserializeUser(async (id, done) => {
     done(error, null);
   });
 });
+
+// Middleware personalizado
+app.use((req, res, next)=>{
+  // Pasamos el valor de la variable creada en el server
+  req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
+  avisoLogin = undefined; // Devolvemos a su valor origen
+
+  next(); // Damos paso a la ejecucion de otros middlewares
+});
+
 
 // Configuración de la plantilla Pug
 app.set('view engine', 'pug');

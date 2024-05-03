@@ -15,10 +15,10 @@ html(lang="es")
             h2.titulo Iniciar Sesión
             form(action="/iniciar-sesion-proceso" class="formulario" method='POST')
                 label(for="username" class="etiqueta-form") Usuario
-                input(type="text", placeholder="Usuario", id="usuario", name="username", class="entrada")
+                input(type="text", placeholder="Usuario", id="usuario", name="username", class="entrada" required)
                 
-                label(for="contrasenia" class="etiqueta-form") Contraseña
-                input(type="password", placeholder="Contraseña", id="contrasenia", name="contrasenia", class="entrada")
+                label(for="contrasenia" class="etiqueta-form" ) Contraseña
+                input(type="password", placeholder="Contraseña", id="contrasenia", name="contrasenia", class="entrada" required)
                 
                 label(for="checkBox", id="checkboxLabel")
                     input(type="checkbox" id="checkBox" name="marcador")
@@ -29,8 +29,8 @@ html(lang="es")
             p.texto ¿No tienes cuenta? 
                 a(href='/registrarse' class="registrate") Registrate
 
-        if aviso
-            div#snackbar= aviso
+        if aviso || avisoLogin
+            div#snackbar= aviso || avisoLogin
                 script.
                     const x = document.getElementById("snackbar");
                     x.className = "show";

@@ -47,6 +47,14 @@ router.post('/', async (req, res) => {
                 req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales 📝😒";
                 return res.redirect('/');
             }
+
+            if(idiomasVigenere === "EN" && !/^[A-Z]+$/.test(key)){
+                req.session.tamanioTexto = texto_a_Encriptar.length;
+                req.session.texto_a_Encriptar = texto_a_Encriptar;
+                req.session.aviso = "ERROR 🤨 La KEY en inglés no debe tener Ñ 📝😒";
+                return res.redirect('/');
+            }
+
             if(idiomasVigenere == 0){
                 req.session.tamanioTexto = texto_a_Encriptar.length;
                 req.session.texto_a_Encriptar = texto_a_Encriptar;

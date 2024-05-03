@@ -25,6 +25,11 @@ router.post('/', async (req, res) => {
 
     // Acciones que toma si es correcto
     try {
+        // Verifica que no exista un usuario con ese nombre
+        if(await accionesUsuarioDB.getUserForUserName(usuario)){
+            req.session.aviso = 'NO USES ESTE USUARIO, le pertenece a alguien más (👉ﾟヮﾟ)👉'; // Mensaje tomado 
+            return res.redirect('/registrarse');
+        }
         await accionesUsuarioDB.registrarUsuario(usuario, correo, await methodEncript.generateHashForAnything(contrasenia));
         req.session.aviso = 'Registrado correctamente 🥹👻'; // Mensaje tomado 
         return res.redirect('/iniciar-sesion');
@@ -32,7 +37,6 @@ router.post('/', async (req, res) => {
         req.session.aviso = 'Estamos teniendo problemas, por favor intenta más tarde'; // Mensaje tomado 
         return res.redirect('/registrarse');
     }
-
 });
 
 module.exports = router;

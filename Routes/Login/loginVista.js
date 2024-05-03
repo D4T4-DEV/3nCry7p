@@ -9,9 +9,15 @@ const router = express.Router();
 
 // Ruta de renderizado de la vista 
 router.get('/', (req, res) => {
-    const aviso = req.session.aviso; // tomamos la variable de aviso de la sesion
-    delete req.session.aviso; // Eliminamos la variable de la sesion
-    res.render('login', { tituloPagina: 'Iniciar sesión', aviso: aviso });
+    // Optiene el valor de la sesion que viene del server
+    var avisoLogin = req.session.avisoLogin;
+    delete req.session.avisoLogin;
+
+    // Obtiene el valor que viene de otra vista
+    var aviso = req.session.aviso;
+    delete req.session.aviso;
+
+    res.render('login', { tituloPagina: 'Iniciar sesión', aviso: aviso, avisoLogin: avisoLogin});
 });
 
 

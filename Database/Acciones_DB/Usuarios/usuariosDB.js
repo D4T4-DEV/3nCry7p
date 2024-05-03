@@ -20,7 +20,6 @@ async function getUserForUserName(userName) {
     const bdConecction = await getConnectionDB(); // Tomamos la conexion
     try {
         const [results] = await bdConecction.query('SELECT * FROM Usuarios WHERE user_name = (?)', [userName]);
-        console.log(results[0])
         // Devolvemos lo que haya buscado dada la condicion
         return results[0];
     } catch (error) {
