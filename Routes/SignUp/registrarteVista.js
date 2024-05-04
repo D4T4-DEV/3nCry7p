@@ -9,8 +9,8 @@ const router = express.Router();
 // Ruta de renderizado de la vista 
 router.get('/', (req, res) => {
 
-    var aviso = req.session.aviso;
-    delete req.session.aviso;
+    var aviso = req.session.avisoSignUp ;
+    delete req.session.avisoSignUp ;
 
     res.render('signup', { title: 'Registrate', aviso: aviso});
 });
