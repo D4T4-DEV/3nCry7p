@@ -22,7 +22,7 @@ const { getUserForUserName, getUserForID } = require('./Database/Acciones_DB/Usu
 // Metodo de cifrado
 const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
 
-// Variable de aviso para el login
+// Variable de aviso para avisos diversos desde el SERVER
 var avisoLogin = undefined;
 var avisoCerrarSesion = undefined;
 
@@ -107,10 +107,12 @@ app.use((req, res, next) => {
 
   req.session.avisoCerrarSesion = avisoCerrarSesion;
   avisoCerrarSesion = undefined;
+  
 
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
+  
 
   next(); // Damos paso a la ejecucion de otros middlewares
 });

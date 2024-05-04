@@ -16,6 +16,7 @@ router.post('/', passport.authenticate('local', {
   // Creamos variables de la nueva sesion que contengan ese valor
   req.session.ID_USER = req.user.id;
   req.session.USER_NAME = req.user.user_name;
+  req.session.avisoLoginEstado = "Bienvenido " + req.user.user_name +", su sesión caducará en 1H";
 
   res.cookie('token', tokenGenerado, { httpOnly: true, secure: false });
   res.redirect('/');

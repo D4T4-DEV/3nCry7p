@@ -38,7 +38,7 @@ async function authenticate(req, res, next) {
 // Generar un toquen con JTW
 function generateToken(userId) {
     // Crea un token con el ID de usuario y una clave secreta
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10' });
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 }
 
 module.exports = {

@@ -5,7 +5,7 @@
 
 const express = require('express');
 const router = express.Router();
-const {authenticate} = require("../../Models/autenticacion/autenticacion");
+const { authenticate } = require("../../Models/autenticacion/autenticacion");
 
 // Ruta de renderizado de la vista 
 router.get('/', async (req, res) => {
@@ -16,19 +16,20 @@ router.get('/', async (req, res) => {
     var texto_a_Encriptar = req.session.texto_a_Encriptar;
     var tamanioTexto = req.session.tamanioTexto;
     var textoEncriptado = req.session.textoEncriptado;
-    var usuario= req.session.USER_NAME;
+    var usuario = req.session.USER_NAME;
     var avisoCerrarSesion = req.session.avisoCerrarSesion;
+    var avisoLoginEstado = req.session.avisoLoginEstado;
 
-
-    res.render('index', { 
-    tituloPagina: 'Bienvenido! 👻💀',
-    usuario: usuario,
-    restante: pruebas,
-    texto_a_Encriptar: texto_a_Encriptar,
-    tamanioTexto: tamanioTexto, 
-    textoEncriptado: textoEncriptado, 
-    aviso: aviso,
-    avisoCerrarSesion: avisoCerrarSesion
+    res.render('index', {
+        tituloPagina: 'Bienvenido! 👻💀',
+        usuario: usuario,
+        restante: pruebas,
+        texto_a_Encriptar: texto_a_Encriptar,
+        tamanioTexto: tamanioTexto,
+        textoEncriptado: textoEncriptado,
+        aviso: aviso,
+        avisoCerrarSesion: avisoCerrarSesion,
+        avisoLoginEstado: avisoLoginEstado
     });
 });
 
