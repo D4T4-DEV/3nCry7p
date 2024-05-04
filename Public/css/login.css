@@ -4,7 +4,7 @@
   background-color: #373d4b;
   padding: 20px;
   border-radius: 8px;
-  display: flex;
+  display: inline;
   flex-direction: column;
   width: 100%;
   max-width: 500px;

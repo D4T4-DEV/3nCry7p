@@ -23,6 +23,7 @@ async function authenticateGlobal(req, res, next) {
             // Aqui podemos ver tambien si la sesion ha expriado
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         } catch (error) {
+            // Verificamos si el error lleva por nombre
             if (error.name === 'TokenExpiredError') {
                 console.log('La sesión ha caducado.');
                 req.session.avisoLoginSignUp = 'La sesión ha caducado, inicia sesión de nueva cuenta 👻';
@@ -54,17 +55,17 @@ async function authenticateRequiered(req, res, next) {
         jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET);
         next();
     } catch (err) {
-        req.session.avisoLoginSignUp = 'Es posible que ha expirado tu sesión, por seguridad vuelva a iniciar';
+        req.session.avisoLoginSignUp = 'Es posible que haya expirado tu sesión, por seguridad vuelva a iniciar';
         return res.redirect('/iniciar-sesion');
     }
-    next(); // Permite ejecutar otro middleware o medio
+    // next(); // Permite ejecutar otro middleware o medio
 }
 
 
 // Generar un toquen con JTW
 function generateToken(userId) {
     // Crea un token con el ID de usuario y una clave secreta
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' }); // expiresIn-> "segundos: 3600" "minutos: 60m" "Horas: 1h"
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5h' }); // expiresIn-> "segundos: 3600" "minutos: 60m" "Horas: 1h"
 }
 
 module.exports = {
