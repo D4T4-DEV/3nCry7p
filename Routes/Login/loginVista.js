@@ -14,11 +14,11 @@ router.get('/', (req, res) => {
     delete req.session.avisoLogin;
 
     // Obtiene el valor que viene de otra vista
-    var aviso = req.session.aviso;
-    delete req.session.aviso;
+    var aviso = req.session.avisoLoginSignUp;
+    delete req.session.avisoLoginSignUp;
 
 
-    res.render('login', { tituloPagina: 'Iniciar sesión', aviso: aviso, avisoLogin: avisoLogin});
+    res.render('login', { tituloPagina: 'Iniciar sesión', aviso: aviso, avisoLogin: avisoLogin });
 });
 
 

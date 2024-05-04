@@ -8,42 +8,31 @@ async function authenticate(req, res, next) {
     // Verifica si hay un token en las cookies de la solicitud
     const token = req.cookies.token;
 
-    var pruebasRestantes = req.session.pruebasRestantes;
+    var pruebasRestantes = req.session.pruebasRestantes; // Obtenemos las pruebas restantes
 
-    console.log(pruebasRestantes);
-    console.log("Token " + token)
-
-    if(pruebasRestantes > 2){
+    if (pruebasRestantes > 2) {
         return res.redirect('/iniciar-sesion');
     }
 
+    // tomamos si esta autenticado previamente 
     if (req.isAuthenticated()) {
-        
         try {
-            const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+            // Intentamos decifrar el codigo y si no puede lanzamos la excepcion
+            // Aqui podemos ver tambien si la sesion ha expriado
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
                 console.log('La sesión ha caducado.');
-
+                req.session.avisoLoginSignUp = 'La sesión ha caducado, inicia sesion de nueva cuenta 👻';
                 return res.redirect('/iniciar-sesion');
             } else {
+                req.session.avisoLoginSignUp = 'Estamos experimentando errores, porfavor intentelo más tarde';
                 console.error('Error al verificar el token:', error);
                 return res.redirect('/iniciar-sesion');
             }
         }
     }
-    // try {
-    //     // Verifica el token usando la clave secreta
-    //     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    //     // Almacena el ID del usuario en la solicitud para su posterior uso
-    //     req.userId = decoded.userId;
-    //     next();
-    // } catch (err) {
-    //     // Si hay un error en la verificación del token, redirige al usuario al login
-    //     return res.redirect('/iniciar-sesion');
-    // }
-
-    next();
+    next(); // Permite ejecutar otro middleware o medio
 }
 
 // Generar un toquen con JTW

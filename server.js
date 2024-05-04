@@ -125,7 +125,7 @@ app.use((req, res, next) => {
 });
 
 
-//Medio para poder cerrar sesión
+// Medio get para cerrar sesion
 app.get('/cerrar-sesion', async (req, res) => {
   await req.logout(async (err) => {
     if (err) {
