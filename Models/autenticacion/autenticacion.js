@@ -4,7 +4,7 @@ const passport = require('passport');
 
 dotenv.config();
 
-async function authenticate(req, res, next) {
+async function authenticateGlobal(req, res, next) {
     // Verifica si hay un token en las cookies de la solicitud
     const token = req.cookies.token;
 
@@ -23,10 +23,10 @@ async function authenticate(req, res, next) {
         } catch (error) {
             if (error.name === 'TokenExpiredError') {
                 console.log('La sesión ha caducado.');
-                req.session.avisoLoginSignUp = 'La sesión ha caducado, inicia sesion de nueva cuenta 👻';
+                req.session.avisoLoginSignUp = 'La sesión ha caducado, inicia sesión de nueva cuenta 👻';
                 return res.redirect('/iniciar-sesion');
             } else {
-                req.session.avisoLoginSignUp = 'Estamos experimentando errores, porfavor intentelo más tarde';
+                req.session.avisoLoginSignUp = 'Estamos experimentando problemas, porfavor intentelo más tarde';
                 console.error('Error al verificar el token:', error);
                 return res.redirect('/iniciar-sesion');
             }
@@ -38,10 +38,10 @@ async function authenticate(req, res, next) {
 // Generar un toquen con JTW
 function generateToken(userId) {
     // Crea un token con el ID de usuario y una clave secreta
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' }); // expiresIn-> "segundos: 3600" "minutos: 60m" "Horas: 1h"
 }
 
 module.exports = {
-    authenticate,
+    authenticateGlobal,
     generateToken
 }

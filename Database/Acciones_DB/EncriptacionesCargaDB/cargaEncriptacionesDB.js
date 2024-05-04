@@ -17,6 +17,8 @@ async function loadEncryptBD_UsersSignUp(id_usuario, tipo_de_encriptacion, idiom
     } catch (error) {
         console.error('No se que hiciste pero acaba de CAER: ', error);
         throw error;
+    } finally {
+        bdConecction.release();
     }
 }
 
@@ -37,6 +39,8 @@ async function loadEncryptBD_Guest(id_usuario, tipo_de_encriptacion, idioma, des
     } catch (error) {
         console.error('No se qué hiciste pero acaba de CAER: ', error);
         throw error;
+    } finally {
+        bdConecction.release();
     }
 }
 

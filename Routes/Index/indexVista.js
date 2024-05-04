@@ -5,7 +5,6 @@
 
 const express = require('express');
 const router = express.Router();
-const { authenticate } = require("../../Models/autenticacion/autenticacion");
 
 // Ruta de renderizado de la vista 
 router.get('/', async (req, res) => {

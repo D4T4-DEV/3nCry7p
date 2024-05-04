@@ -9,9 +9,9 @@ const BASE_SESENTA_Y_CUATRO = require('../../Models/Encriptaciones/encryptBaseSe
 
 // Importacion de metodos de la BD
 const { loadEncryptBD_UsersSignUp, loadEncryptBD_Guest } = require('../../Database/Acciones_DB/EncriptacionesCargaDB/cargaEncriptacionesDB');
-const { authenticate } = require("../../Models/autenticacion/autenticacion");
+const { authenticateGlobal } = require("../../Models/autenticacion/autenticacion");
 
-router.post('/', authenticate, async (req, res) => {
+router.post('/', authenticateGlobal, async (req, res) => {
     // Variables obtenidas del body
     const { texto_a_Encriptar, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key } = req.body; // Obtiene el valor de los formularios
 
