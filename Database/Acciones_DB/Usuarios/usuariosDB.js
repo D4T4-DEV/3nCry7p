@@ -6,7 +6,7 @@ async function registrarUsuario(Usuario, Email, Contrasenia) {
     const bdConecction = await getConnectionDB(); // Tomamos la conexion
     try {
         await bdConecction.query('INSERT INTO Usuarios (user_name, email, pwd_hash) VALUES (?, ?, ?)', [Usuario, Email, Contrasenia]);
-        console.log('Usuario creaado correctamente');
+        console.log('Usuario creado correctamente');
     } catch (error) {
         console.error('Error al crear al usuario:', error);
         throw error;

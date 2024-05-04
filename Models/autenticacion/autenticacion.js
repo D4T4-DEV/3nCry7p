@@ -4,6 +4,7 @@ const passport = require('passport');
 
 dotenv.config();
 
+// Proteger un medio global dada la condicion de pruebas
 async function authenticateGlobal(req, res, next) {
     // Verifica si hay un token en las cookies de la solicitud
     const token = req.cookies.token;
@@ -36,6 +37,30 @@ async function authenticateGlobal(req, res, next) {
     next(); // Permite ejecutar otro middleware o medio
 }
 
+// Proteger un medio especifico
+async function authenticateRequiered(req, res, next) {
+    // Verifica si hay un token en las cookies de la solicitud
+    const cookie = req.cookies.token;
+
+    // Si no hay cookie, redirige al usuario al login
+
+    if (!cookie) {
+        req.session.avisoLoginSignUp = 'Inicia sesión para poder utilizar este medio... ;)';
+        return res.redirect('/iniciar-sesion');
+    }
+    
+    try {
+        // Verifica el token usando la clave secreta
+        jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET);
+        next();
+    } catch (err) {
+        req.session.avisoLoginSignUp = 'Es posible que ha expirado tu sesión, por seguridad vuelva a iniciar';
+        return res.redirect('/iniciar-sesion');
+    }
+    next(); // Permite ejecutar otro middleware o medio
+}
+
+
 // Generar un toquen con JTW
 function generateToken(userId) {
     // Crea un token con el ID de usuario y una clave secreta
@@ -44,5 +69,6 @@ function generateToken(userId) {
 
 module.exports = {
     authenticateGlobal,
-    generateToken
+    generateToken,
+    authenticateRequiered
 }

@@ -176,7 +176,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
         console.log("Error al registrar la encriptacion, con error: " + error + " → BD fuera de linea");
         res.redirect('/');
     }
-
 });
 
 

@@ -19,6 +19,9 @@ router.get('/', async (req, res) => {
     var avisoCerrarSesion = req.session.avisoCerrarSesion;
     var avisoLoginEstado = req.session.avisoLoginEstado;
 
+    // Borramos la variable de la sesion
+    delete req.session.avisoLoginEstado;
+
     res.render('index', {
         tituloPagina: 'Bienvenido! 👻💀',
         usuario: usuario,
@@ -31,9 +34,6 @@ router.get('/', async (req, res) => {
         avisoLoginEstado: avisoLoginEstado
     });
 });
-
-
-
 
 module.exports = router;
 // Esta es una sección importante que necesita ser completada.
