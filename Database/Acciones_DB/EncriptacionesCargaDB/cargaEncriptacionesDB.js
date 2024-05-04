@@ -25,7 +25,7 @@ async function loadEncryptBD_UsersSignUp(id_usuario, tipo_de_encriptacion, idiom
 async function loadEncryptBD_Guest(id_usuario, tipo_de_encriptacion, idioma, desplazamientos, key, texto_sin_encriptar, texto_encriptado) {
     const bdConecction = await connection.getConnectionDB();
     try {
-        await bdConecction.query('INSERT INTO loadEncryptBD_Guest (cookie_invitado, tipo_de_encriptacion, idioma, desplazamientos, key_util, texto_sin_encriptar, texto_encriptado)' +
+        await bdConecction.query('INSERT INTO loadEncrypt_Guest (cookie_invitado, tipo_de_encriptacion, idioma, desplazamientos, key_util, texto_sin_encriptar, texto_encriptado)' +
             ' VALUES (?, ?, ?, ?, ?, ?, ?)',
             [   id_usuario,
                 tipo_de_encriptacion,

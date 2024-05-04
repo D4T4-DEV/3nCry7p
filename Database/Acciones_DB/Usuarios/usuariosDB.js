@@ -6,9 +6,9 @@ async function registrarUsuario(Usuario, Email, Contrasenia) {
     const bdConecction = await getConnectionDB(); // Tomamos la conexion
     try {
         await bdConecction.query('INSERT INTO Usuarios (user_name, email, pwd_hash) VALUES (?, ?, ?)', [Usuario, Email, Contrasenia]);
-        console.log('Usuario insertado correctamente');
+        console.log('Usuario creaado correctamente');
     } catch (error) {
-        console.error('Error al insertar usuario:', error);
+        console.error('Error al crear al usuario:', error);
         throw error;
     } finally {
         bdConecction.release();
@@ -23,7 +23,7 @@ async function getUserForUserName(userName) {
         // Devolvemos lo que haya buscado dada la condicion
         return results[0];
     } catch (error) {
-        console.error('No se tienen coincidencias: ', error);
+        console.error('No se tienen coincidencias del usario por nombre: ', error);
         throw error;
     } finally {
         bdConecction.release();
@@ -38,7 +38,7 @@ async function getUserForID(id) {
         // Devolvemos lo que haya buscado dada la condicion
         return results[0];
     } catch (error) {
-        console.error('No se tienen coincidencias: ', error);
+        console.error('No se tienen coincidencias del usuario por ID: ', error);
         throw error;
     } finally {
         bdConecction.release();

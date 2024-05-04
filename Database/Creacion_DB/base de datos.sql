@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Encriptaciones(
     FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
 );
 
-CREATE TABLE IF NOT EXISTS loadEncryptBD_Guest(
+CREATE TABLE IF NOT EXISTS loadEncrypt_Guest(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     cookie_invitado LONGTEXT NOT NULL, -- Esto para saber que usuario lo solicito
     tipo_de_encriptacion VARCHAR(100) NOT NULL, -- Saber que modo de encriptacion elijio

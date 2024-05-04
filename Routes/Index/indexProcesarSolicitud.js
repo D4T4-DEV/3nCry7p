@@ -15,6 +15,9 @@ router.post('/', authenticateGlobal, async (req, res) => {
     // Variables obtenidas del body
     const { texto_a_Encriptar, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key } = req.body; // Obtiene el valor de los formularios
 
+    const cookieInvitado = req.cookies['connect.sid']; // Cookie generada por Express
+    const id_Usuario = req.session.ID_USER; // 
+
     try {
         switch (metodosEncriptaciones) {
             case "cesar":
@@ -31,12 +34,17 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 // Configuracion del metodo
                 CESAR.idiomAlfabet(idiomasCesar);
 
-                // Paso del resultado a la sesion
-                req.session.textoEncriptado = CESAR.encripytCesar(texto_a_Encriptar, desplazamientos);
+                // Transformacion del txt a encriptado
+                var texto_encriptado = CESAR.encripytCesar(texto_a_Encriptar, desplazamientos)
 
                 // Subida a la BD
-                uploadDataInDB(texto_a_Encriptar, req.session.textoEncriptado, metodosEncriptaciones, idiomasCesar, null, desplazamientos, null, req, res);
-
+                if (id_Usuario) {
+                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
+                } else {
+                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
+                }
+                // Paso del resultado a la sesion
+                req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
                     "Metodo: Cesar \n" +
@@ -44,10 +52,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     "En el idioma: " + idiomasCesar + "\n" +
                     "Con el número de desplazamientos de: " + desplazamientos;
 
-
-                console.log(CESAR.encripytCesar(texto_a_Encriptar, desplazamientos))
-
-
+                console.log(texto_encriptado)
                 analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
@@ -75,24 +80,29 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                analizarPruebasRestantes(req, res);
-
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
-                // Paso del resultado a la sesion activa
-                req.session.textoEncriptado = VIGENERE.encripytVigenere(texto_a_Encriptar, key, idiomasVigenere);
+                // Transformacion del txt a encriptado
+                var texto_encriptado = VIGENERE.encripytVigenere(texto_a_Encriptar, key, idiomasVigenere);
 
                 // Subida a la BD
-                uploadDataInDB(texto_a_Encriptar, req.session.textoEncriptado, metodosEncriptaciones, null, idiomasVigenere, null, key, req, res);
+                if (id_Usuario) {
+                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
+                } else {
+                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
+                }
+
+                // Paso del resultado a la sesion
+                req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
                     "Metodo: Vigenere \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n" +
                     "Con la Key: " + key + "\n";
 
-
-                console.log(VIGENERE.encripytVigenere(texto_a_Encriptar, key, idiomasVigenere));
+                console.log(texto_encriptado);
+                analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
 
@@ -102,17 +112,24 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
-                // Pasamos el texto encriptado a la sesion
-                req.session.textoEncriptado = HEX.encripytHex(texto_a_Encriptar);
+                // Transformacion del txt a encriptado
+                var texto_encriptado = HEX.encripytHex(texto_a_Encriptar);
 
                 // Subida a la BD
-                uploadDataInDB(texto_a_Encriptar, req.session.textoEncriptado, metodosEncriptaciones, null, null, null, null, req, res);
+                if (id_Usuario) {
+                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
+                } else {
+                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
+                }
+
+                // Pasamos el texto encriptado a la sesion
+                req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
                     "Metodo: Hexadecimal \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
-                console.log(HEX.encripytHex(texto_a_Encriptar));
+                console.log(texto_encriptado);
 
                 res.redirect('/');
                 break;
@@ -123,18 +140,25 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
-                // Pasamos el texto encriptado a la sesion
-                req.session.textoEncriptado = BASE_SESENTA_Y_CUATRO.encripytBase64(texto_a_Encriptar);
+
+                // Transformacion del txt a encriptado
+                var texto_encriptado = BASE_SESENTA_Y_CUATRO.encripytBase64(texto_a_Encriptar);
 
                 // Subida a la BD
-                uploadDataInDB(texto_a_Encriptar, req.session.textoEncriptado, metodosEncriptaciones, null, null, null, null, req, res);
+                if (id_Usuario) {
+                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
+                } else {
+                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
+                }
 
+                // Pasamos el texto encriptado a la sesion
+                req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
                     "Metodo: Base 64 \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
-                console.log(BASE_SESENTA_Y_CUATRO.encripytBase64(texto_a_Encriptar));
+                console.log(texto_encriptado);
                 res.redirect('/');
                 break;
 
@@ -149,7 +173,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
         req.session.tamanioTexto = texto_a_Encriptar.length;
         req.session.texto_a_Encriptar = texto_a_Encriptar;
         req.session.aviso = "Estamos experimentando problemas, por favor intentalo más tarde...";
-        console.log("Error al registrar la encriptacion, con error: " + error);
+        console.log("Error al registrar la encriptacion, con error: " + error + " → BD fuera de linea");
         res.redirect('/');
     }
 
@@ -174,26 +198,25 @@ async function uploadDataInDB(texto_a_Encriptar, texto_encriptado, metodosEncrip
         // Si existe el usuario que deberia si esta logueado
         if (id_Usuario) {
             if (metodosEncriptaciones === "cesar") {
-                await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
+
             } else if (metodosEncriptaciones === "vigenere") {
-                await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
+
             } else {
-                await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
+
             }
         } else {
             // Si no existe el usuario 
             if (metodosEncriptaciones === "cesar") {
-                await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
+
             } else if (metodosEncriptaciones === "vigenere") {
                 await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
             } else {
                 await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
             }
         }
-
     } catch (error) {
-        console.log(error);
-        res.redirect('/');
+        console.log("Error al registrar la encriptacion en la base de datos:", error);
+        throw error;
     }
 }
 

@@ -112,7 +112,6 @@ app.use((req, res, next) => {
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
-  
 
   next(); // Damos paso a la ejecucion de otros middlewares
 });
