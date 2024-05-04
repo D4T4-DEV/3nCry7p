@@ -13,7 +13,7 @@ async function loadEncryptBD_UsersSignUp(id_usuario, tipo_de_encriptacion, idiom
                 texto_sin_encriptar,
                 texto_encriptado]
         );
-        console.log('Se ha registrado correctamente');
+        console.log('Se subido correctamente los datos en modo logueado a la DB');
     } catch (error) {
         console.error('No se que hiciste pero acaba de CAER: ', error);
         throw error;
@@ -35,7 +35,7 @@ async function loadEncryptBD_Guest(id_usuario, tipo_de_encriptacion, idioma, des
                 texto_sin_encriptar,
                 texto_encriptado]
         );
-        console.log('Se ha registrado correctamente');
+        console.log('Se subido correctamente los datos en modo invitado a la DB');
     } catch (error) {
         console.error('No se qué hiciste pero acaba de CAER: ', error);
         throw error;

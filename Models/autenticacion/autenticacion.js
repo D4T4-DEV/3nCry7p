@@ -11,6 +11,7 @@ async function authenticateGlobal(req, res, next) {
     var pruebasRestantes = req.session.pruebasRestantes; // Obtenemos las pruebas restantes
 
     if (pruebasRestantes > 2) {
+        req.session.avisoLoginSignUp = 'Inicia sesión para poder seguir encriptando...O.O';
         return res.redirect('/iniciar-sesion');
     }
 
