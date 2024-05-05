@@ -21,4 +21,6 @@ Tendrás que cumplir con los siguientes medios:
         - Dependencias de desarrollador:
             - nodemon
             - npm-run-all
-    
+
+Si no quieres instalar una a una puedes correr el siguiente comando:
+
