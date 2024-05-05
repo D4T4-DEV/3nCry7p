@@ -16,8 +16,8 @@
 }
 #snackbar.show {
   visibility: visible;
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s forwards;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s forwards;
+  -webkit-animation: fadein 0.9s, fadeout 2.5s 2.5s forwards;
+  animation: fadein 0.9s, fadeout 2.5s 2.5s forwards;
 }
 
 @-webkit-keyframes fadein {

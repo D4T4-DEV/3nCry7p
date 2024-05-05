@@ -118,12 +118,10 @@ app.use((req, res, next) => {
   next(); // Damos paso a la ejecucion de otros middlewares
 });
 
-// Middleware de contador:
+// Middleware de contador de peticiones:
 app.use((req, res, next) => {
-  const id = req.session.ID_USER;
-  const nombreUsuario = req.session.USER_NAME;
-  // console.log("DATO USUARIO ID DEL MIDDLEWARE: " + id);
-  // console.log("DATO USUARIO DEL MIDDLEWARE: " + nombreUsuario);
+  // Imprime en consola las acciones que se realizan.
+  // console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
 
