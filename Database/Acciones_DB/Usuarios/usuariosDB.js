@@ -45,9 +45,23 @@ async function getUserForID(id) {
     }
 }
 
+async function updateLoginCounter(id){
+    const bdConecction = await getConnectionDB(); // Tomamos la conexion
+    
+    try {
+        await bdConecction.query('call verify_and_count_logins(?)', [id]);
+        console.log("Se ha registrado correctamente el login del usuario con ID: " + id);
+    } catch (error) {
+        console.log("Error al utilizar el procedimiento de la BD, con error " + error);
+    }
+}
+
+// console.log(updateLoginCounter(1));
+
 // Exportaciones 
 module.exports = {
     registrarUsuario,
     getUserForUserName,
-    getUserForID
+    getUserForID,
+    updateLoginCounter
 };

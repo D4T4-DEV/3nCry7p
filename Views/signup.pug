@@ -36,13 +36,13 @@ html(lang="es")
                 a(href='/terminos-y-condiciones' class="registrate") Terminos y Condiciones
 
 
-    if aviso
-        div#snackbar
-            | #{aviso}
-            script.
-                const x = document.getElementById("snackbar");
-                x.className = "show";
-                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000);
+        if aviso
+            div#snackbar
+                | #{aviso}
+                script.
+                    const x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 4000);
         script.
             // Medio para poder mostrar la contraseña
             const isSelected = document.getElementById("checkBox");

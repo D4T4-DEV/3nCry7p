@@ -17,7 +17,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
 // Metodos de DB
-const { getUserForUserName, getUserForID } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
+const { getUserForUserName, getUserForID, updateLoginCounter} = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
 // Metodo de cifrado
 const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
@@ -68,6 +68,8 @@ passport.use(new LocalStrategy({
         console.log("Se ha experimentado este error: " + "Contraseña incorrecta" + "\n");
         return done(null, false);
       }
+
+      await updateLoginCounter(user.id); // Hacemos el update del usuario en la tabla logins_Users
 
       // Si todo va bien, devolvemos el arreglo de la DB 
       return done(null, user);
@@ -138,7 +140,7 @@ app.get('/cerrar-sesion', async (req, res) => {
         console.error('Error al destruir la sesión:', err + "STATUS: 500");
         avisoCerrarSesion = "Error al cerrar sesión, por favor intentelo nuevamente..."
       }
-      console.log('req.session.destroy finalizado correctamente');
+      console.log('ESTE PROCESO -> req.session.destroy -> ha finalizado correctamente');
       avisoCerrarSesion = "Se ha cerrado sesión";
     });
     res.clearCookie('token');

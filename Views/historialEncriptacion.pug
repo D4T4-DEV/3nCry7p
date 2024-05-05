@@ -18,7 +18,11 @@ html(lang="en")
 
         .conteiner-historial
             if encriptaciones.length > 0 
-                    each encriptacion in encriptaciones
+                    each encriptacion in encriptaciones 
+                        //- Formateo de la fecha desde JS
+                        - const fechaRegistro = new Date(encriptacion.fecha_de_registro);
+                        - const formateoDeFecha = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+                        - const fecha_y_Hora = fechaRegistro.toLocaleDateString('es-ES', formateoDeFecha);
                         if encriptacion.tipo_de_encriptacion === "cesar"
                             h3.tituloMetodo Metodo Cesar
                             .contenedorResumen 
@@ -33,6 +37,12 @@ html(lang="en")
                                         span(class="material-symbols-outlined" id='copy-one' title="Copiar el texto sin encriptar") content_copy
                                     a(class="copy" onclick=`copiarTextoDelTextArea('txt-encrip-${encriptacion.id}')` title="Copiar el texto encriptado")
                                         span(class="material-symbols-outlined" id='copy-two') content_copy
+
+                            h4.datos-import Datos importantes:
+                            .contenedor-cualidades 
+                                    p.cualidades-txt Idioma: #{encriptacion.idioma} 📝 
+                                    p.cualidades-txt Desplazamientos: #{encriptacion.desplazamientos} 
+                                    p.cualidades-txt Fecha de y hora de encriptación: #{fecha_y_Hora}
 
 
                         if encriptacion.tipo_de_encriptacion === "vigenere"
@@ -50,7 +60,11 @@ html(lang="en")
                                     a(class="copy" onclick=`copiarTextoDelTextArea('txt-encrip-${encriptacion.id}')` title="Copiar el texto encriptado")
                                         span(class="material-symbols-outlined" id='copy-two') content_copy
 
-
+                            h4.datos-import Datos importantes:
+                            .contenedor-cualidades 
+                                    p.cualidades-txt Idioma: #{encriptacion.idioma} 📝
+                                    p.cualidades-txt Key usada: #{encriptacion.key_util} 🔐
+                                    p.cualidades-txt Fecha de y hora de encriptación: #{fecha_y_Hora}
 
                         if encriptacion.tipo_de_encriptacion === "hex"
                             h3.tituloMetodo Metodo Hexadecimal
@@ -67,6 +81,10 @@ html(lang="en")
                                     a(class="copy" onclick=`copiarTextoDelTextArea('txt-encrip-${encriptacion.id}')` title="Copiar el texto encriptado")
                                         span(class="material-symbols-outlined" id='copy-two') content_copy
 
+                            h4.datos-import Datos importantes:
+                            .contenedor-cualidades 
+                                    p.cualidades-txt Fecha de y hora de encriptación: #{fecha_y_Hora}
+
 
                         if encriptacion.tipo_de_encriptacion === "base64"
                             h3.tituloMetodo Metodo Base 64
@@ -82,6 +100,10 @@ html(lang="en")
                                         span(class="material-symbols-outlined" id='copy-one' title="Copiar el texto sin encriptar") content_copy
                                     a(class="copy" onclick=`copiarTextoDelTextArea('txt-encrip-${encriptacion.id}')` title="Copiar el texto encriptado")
                                         span(class="material-symbols-outlined" id='copy-two') content_copy
+
+                            h4.datos-import Datos importantes:
+                            .contenedor-cualidades 
+                                    p.cualidades-txt Fecha de y hora de encriptación: #{fecha_y_Hora}
 
 
             else 
