@@ -22,10 +22,15 @@ Tendrás que cumplir con los siguientes medios:
             - nodemon
             - npm-run-all
 
-Si no quieres instalar una a una las dependencias puedes correr los siguientes comandos estando dentro del directorio del proyecto y usando la terminal:
+- Tener instalador MySQL Community Server y MySQL Workbench
+    - Crear la Base de datos que encontrarás en el directorio de `3nCry7p\Database\Creacion_DB\base de datos.sql`, esto trae lo necesario para que se registre correctamente en la Base de datos 
+
+Si no quieres instalar una a una las dependencias puedes correr los siguientes comandos estando dentro del directorio del proyecto (usando la terminal):
 
 - Dependencias Generales:
     - `npm i bcrypt cookie-parser dotenv express express-session jsonwebtoken mysql2 passport passport-local pug sass`
 
 - Dependencias de desarrollador:
     - `npm i nodemon npm-run-all -D`
+
+
