@@ -28,6 +28,14 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
                     return res.redirect('/');
                 }
+                
+                if(idiomasCesar === "EN" && !/^[A-Z]+$/.test(texto_a_Encriptar)){
+                    req.session.tamanioTexto = texto_a_Encriptar.length;
+                    req.session.texto_a_Encriptar = texto_a_Encriptar;
+                    req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
+                    return res.redirect('/');
+                }
+
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
@@ -135,6 +143,15 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             case "base64":
+
+                // Detectamos si este contiene emojis, ya que este no los acepta
+                if(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(texto_a_Encriptar)){
+                    req.session.tamanioTexto = texto_a_Encriptar.length;
+                    req.session.texto_a_Encriptar = texto_a_Encriptar;
+                    req.session.aviso = "ERROR 🤨 Este metodo no admite emojis 📝😒";
+                    return res.redirect('/');
+                }
+
                 analizarPruebasRestantes(req, res);
 
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
