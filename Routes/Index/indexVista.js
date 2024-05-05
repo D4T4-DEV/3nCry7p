@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
     delete req.session.avisoLoginEstado;
 
     if(!usuario && !leyoElLeeme){
-        mensjeInicio = "Le recomendamos ir al apartado Leeme😉";
+        mensjeInicio = "Le recomendamos ir al apartado → Leeme...";
     }else{
         mensjeInicio = undefined;
     }

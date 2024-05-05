@@ -67,10 +67,17 @@ router.post('/', authenticateGlobal, async (req, res) => {
 
             case "vigenere":
 
+                if (idiomasVigenere == 0) {
+                    req.session.tamanioTexto = texto_a_Encriptar.length;
+                    req.session.texto_a_Encriptar = texto_a_Encriptar;
+                    req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
+                    return res.redirect('/');
+                }
+                
                 if (!/^[A-ZÑ]+$/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
-                    req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales 📝😒";
+                    req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales, incluido emojis 📝😒";
                     return res.redirect('/');
                 }
 
@@ -81,12 +88,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                if (idiomasVigenere == 0) {
-                    req.session.tamanioTexto = texto_a_Encriptar.length;
-                    req.session.texto_a_Encriptar = texto_a_Encriptar;
-                    req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
-                    return res.redirect('/');
-                }
 
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
