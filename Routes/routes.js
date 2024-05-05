@@ -23,6 +23,9 @@ const SignUpRegister = require('./SignUp/registrar');
 // Ruta para terminos y condiciones 
 const terminos_y_condicionesView = require('./Terminos_y_Condiciones/terminos_y_condiciones');
 
+// Ruta para leeme
+const leemeView = require('./Leeme/leemeView');
+
 // Ruta para historial
 const historialEncriptacion = require('./Historial_Encriptaciones/historialEncriptacionesView');
 
@@ -42,6 +45,9 @@ router.use('/registrar-new-user', SignUpRegister);
 
 // Configuracion de terminos y condiciones
 router.use('/terminos-y-condiciones', terminos_y_condicionesView); 
+
+// Configuracion de leeme
+router.use('/leeme', leemeView);
 
 // Configuracion para historial
 router.use('/historial', historialEncriptacion); 

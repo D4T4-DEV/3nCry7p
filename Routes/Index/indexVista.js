@@ -8,6 +8,7 @@ const router = express.Router();
 
 // Ruta de renderizado de la vista 
 router.get('/', async (req, res) => {
+    var mensjeInicio;
 
     // Obtenemos
     var pruebas = req.session.pruebasRestantes;
@@ -18,9 +19,16 @@ router.get('/', async (req, res) => {
     var usuario = req.session.USER_NAME;
     var avisoCerrarSesion = req.session.avisoCerrarSesion;
     var avisoLoginEstado = req.session.avisoLoginEstado;
+    var leyoElLeeme = req.session.entroALeeme;
 
     // Borramos la variable de la sesion
     delete req.session.avisoLoginEstado;
+
+    if(!usuario && !leyoElLeeme){
+        mensjeInicio = "Le recomendamos ir al apartado Leeme😉";
+    }else{
+        mensjeInicio = undefined;
+    }
 
     res.render('index', {
         tituloPagina: 'Bienvenido! 👻💀',
@@ -31,7 +39,8 @@ router.get('/', async (req, res) => {
         textoEncriptado: textoEncriptado,
         aviso: aviso,
         avisoCerrarSesion: avisoCerrarSesion,
-        avisoLoginEstado: avisoLoginEstado
+        avisoLoginEstado: avisoLoginEstado,
+        mensjeInicio: mensjeInicio
     });
 });
 
