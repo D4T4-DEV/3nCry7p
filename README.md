@@ -2,7 +2,23 @@
 
 ## Instrucciones para poder ejecutarlo
 
-Tendrás que cumplir con los siguientes medios
+Tendrás que cumplir con los siguientes medios:
 
 - Tener instalado Node.js
-
+    - Instalar las siguientes dependencias:
+        - Dependencias Generales
+            - bcrypt
+            - cookie-parser
+            - dotenv
+            - express
+            - express-session
+            - jsonwebtoken
+            - mysql2
+            - passport
+            - passport-local
+            - pug
+            - sass
+        - Dependencias de desarrollador:
+            - nodemon
+            - npm-run-all
+    
