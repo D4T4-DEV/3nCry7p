@@ -22,7 +22,10 @@ Tendrás que cumplir con los siguientes medios:
             - nodemon
             - npm-run-all
 
-Si no quieres instalar una a una puedes correr el siguiente comando en la terminal del directorio:
+Si no quieres instalar una a una las dependencias puedes correr los siguientes comandos estando dentro del directorio del proyecto y usando la terminal:
 
 - Dependencias Generales:
     - `npm i bcrypt cookie-parser dotenv express express-session jsonwebtoken mysql2 passport passport-local pug sass`
+
+- Dependencias de desarrollador:
+    - `npm i nodemon npm-run-all -D`
