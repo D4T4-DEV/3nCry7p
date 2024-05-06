@@ -73,6 +73,13 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
                     return res.redirect('/');
                 }
+
+                if (idiomasVigenere === "EN" && /^[Ññ]+$/.test(texto_a_Encriptar)) {
+                    req.session.tamanioTexto = texto_a_Encriptar.length;
+                    req.session.texto_a_Encriptar = texto_a_Encriptar;
+                    req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
+                    return res.redirect('/');
+                }
                 
                 if (idiomasVigenere === "EN" && /^[Ñ]+$/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
