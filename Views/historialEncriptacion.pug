@@ -106,16 +106,16 @@ html(lang="en")
                             .contenedor-cualidades 
                                     p.cualidades-txt Fecha de y hora de encriptación: #{fecha_y_Hora}
 
-
             else 
                 p#parrafo No haz encriptado nada, ¡Haz uno!
 
-        if avisoError
-            div#snackbar= avisoError
-                script.
-                    const x = document.getElementById("snackbar");
-                    x.className = "show";
-                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
+            if avisoError
+                div#snackbar= avisoError 
+                    script.
+                        const x = document.getElementById("snackbar");
+                        x.className = "show";
+                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
+        div#snackbar
 
         script.
             // Funcion para copiar el texto del textArea
@@ -124,5 +124,10 @@ html(lang="en")
 
                 textareaToCopy.select(); // Seleccionamos todo el texto dentro de este
                 document.execCommand("copy"); // Ejecutamos el comando copiar
-                alert("Haz copiado el texto: " + textareaToCopy.value); // Mandamos una alerta que contendrá el [Texto copiado y el valor de ese texto]
+
+                // alert("Haz copiado el texto: " + textareaToCopy.value); // Mandamos una alerta que contendrá el [Texto copiado y el valor de ese texto]
+                    const avisoCopiado = document.getElementById("snackbar");
+                    avisoCopiado.className = "show";
+                    avisoCopiado.textContent = "Haz copiado el texto"
+                    setTimeout(function(){ avisoCopiado.className = avisoCopiado.className.replace("show", ""); }, 4000);
             }
