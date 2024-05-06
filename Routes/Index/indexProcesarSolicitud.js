@@ -21,7 +21,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
     try {
         switch (metodosEncriptaciones) {
             case "cesar":
-
                 // Comprueba que se hallan seleccionado los valores
                 if (idiomasCesar == 0 || desplazamientos == -1) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
@@ -29,9 +28,9 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     req.session.aviso = "ERROR 🤨 No llenaste los campos correspondientes 📝😒";
                     return res.redirect('/');
                 }
-                
+
                 // Comprueba que el texto a encriptar no tenga ñÑ cuando el idioma es ingles
-                if(idiomasCesar === "EN" && /[Ññ]/.test(texto_a_Encriptar)){
+                if (idiomasCesar === "EN" && /[Ññ]/.test(texto_a_Encriptar)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
@@ -68,7 +67,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             case "vigenere":
-
                 // Comprobar que todos los campos esten llenados
                 if (idiomasVigenere == 0) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
@@ -84,7 +82,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
                     return res.redirect('/');
                 }
-                
+
                 // Comprobar que la key si el lenguaje es ingles no contenga ñÑ
                 if (idiomasVigenere === "EN" && /[Ñ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
@@ -128,7 +126,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             case "hex":
-                
+
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
@@ -157,7 +155,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
             case "base64":
 
                 // Detectamos si este contiene emojis, ya que este no los acepta
-                if(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(texto_a_Encriptar)){
+                if (/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(texto_a_Encriptar)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 Este metodo no admite emojis 📝😒";
@@ -217,39 +215,4 @@ function analizarPruebasRestantes(req, res) {
     }
 }
 
-
-// funcion para registrar el texto a la bd
-async function uploadDataInDB(texto_a_Encriptar, texto_encriptado, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key, req, res) {
-    try {
-        const cookieInvitado = req.cookies['connect.sid']; // Cookie generada por Express
-        const id_Usuario = req.session.ID_USER; // 
-
-        // Si existe el usuario que deberia si esta logueado
-        if (id_Usuario) {
-            if (metodosEncriptaciones === "cesar") {
-
-            } else if (metodosEncriptaciones === "vigenere") {
-
-            } else {
-
-            }
-        } else {
-            // Si no existe el usuario 
-            if (metodosEncriptaciones === "cesar") {
-
-            } else if (metodosEncriptaciones === "vigenere") {
-                await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
-            } else {
-                await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
-            }
-        }
-    } catch (error) {
-        console.log("Error al registrar la encriptacion en la base de datos:", error);
-        throw error;
-    }
-}
-
 module.exports = router;
-
-
-// FUNCIONES PARA NO TENER UN MOUSTRO

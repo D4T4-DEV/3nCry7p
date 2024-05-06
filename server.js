@@ -17,7 +17,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
 // Metodos de DB
-const { getUserForUserName, getUserForID, updateLoginCounter} = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
+const { getUserForUserName, getUserForID, updateLoginCounter } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
 // Metodo de cifrado
 const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
@@ -53,7 +53,7 @@ passport.use(new LocalStrategy({
     // ASPECTOS QUE HARA LA VERIFICACION
 
     try {
-      
+
       const user = await getUserForUserName(username); // Obtenemos el usuario si es que existe en la DB
       if (!user) {
         avisoLogin = "Por favor verifica las credenciales ingresadas";
@@ -109,7 +109,7 @@ app.use((req, res, next) => {
 
   req.session.avisoCerrarSesion = avisoCerrarSesion;
   avisoCerrarSesion = undefined;
-  
+
 
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
@@ -124,7 +124,6 @@ app.use((req, res, next) => {
   // console.log(`Solicitud recibida: ${req.method} ${req.url}`);
   next();
 });
-
 
 // Medio get para cerrar sesion
 app.get('/cerrar-sesion', async (req, res) => {
