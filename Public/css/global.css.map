@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["../../Styles/Sass/global.sass"],"names":[],"mappings":"AAAQ;AAER;EACE;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA","file":"global.css"}
+{"version":3,"sourceRoot":"","sources":["../../Styles/Sass/global.sass"],"names":[],"mappings":"AAAQ;AAER;EACE;EACA;EACA;EACA;EACA;EACA;;;AAEF;EACQ;EACA;;;AAER;EACQ;;;AACR;EACI;EACA;EACA;EACA;EACA;EACA;EACA;EACA;EACA","file":"global.css"}
