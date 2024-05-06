@@ -50,3 +50,5 @@ Si no quieres instalar una a una las dependencias puedes correr los siguientes c
     - `npm i nodemon npm-run-all -D`
 
 
+#### Los recursos (iconos y demás):
+- El icono utilizado en la página fue tomado de: `https://www.flaticon.es/iconos-gratis/esqueleto`
