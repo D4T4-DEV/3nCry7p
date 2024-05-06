@@ -29,7 +29,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
                 
-                if(idiomasCesar === "EN" && /^[Ññ]+$/.test(texto_a_Encriptar)){
+                if(idiomasCesar === "EN" && /[Ññ]/.test(texto_a_Encriptar)){
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
@@ -74,14 +74,14 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                if (idiomasVigenere === "EN" && /^[Ññ]+$/.test(texto_a_Encriptar)) {
+                if (idiomasVigenere === "EN" && /[Ññ]/.test(texto_a_Encriptar)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 El texto a encriptar en inglés no debe tener Ñ 📝😒";
                     return res.redirect('/');
                 }
                 
-                if (idiomasVigenere === "EN" && /^[Ñ]+$/.test(key)) {
+                if (idiomasVigenere === "EN" && /[Ñ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 La KEY en inglés no debe tener Ñ 📝😒";
