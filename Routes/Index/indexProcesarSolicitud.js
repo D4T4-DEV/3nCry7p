@@ -22,6 +22,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
         switch (metodosEncriptaciones) {
             case "cesar":
 
+                // Comprueba que se hallan seleccionado los valores
                 if (idiomasCesar == 0 || desplazamientos == -1) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
@@ -29,6 +30,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
                 
+                // Comprueba que el texto a encriptar no tenga ñÑ cuando el idioma es ingles
                 if(idiomasCesar === "EN" && /[Ññ]/.test(texto_a_Encriptar)){
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
@@ -45,7 +47,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 // Transformacion del txt a encriptado
                 var texto_encriptado = CESAR.encripytCesar(texto_a_Encriptar, desplazamientos)
 
-                // Subida a la BD
+                // Subida a la BD en modo invitado o usuario
                 if (id_Usuario) {
                     await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
                 } else {
@@ -67,6 +69,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
 
             case "vigenere":
 
+                // Comprobar que todos los campos esten llenados
                 if (idiomasVigenere == 0) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
@@ -74,6 +77,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
+                // Comprobar que el texto ingresado este en ingles y no contenga ñÑ
                 if (idiomasVigenere === "EN" && /[Ññ]/.test(texto_a_Encriptar)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
@@ -81,6 +85,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
                 
+                // Comprobar que la key si el lenguaje es ingles no contenga ñÑ
                 if (idiomasVigenere === "EN" && /[Ñ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
@@ -88,7 +93,8 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                if (!/^[A-ZÑ]+$/.test(key)) {
+                // Comprobar que la key contenga solo letras y no caracteres especiales 
+                if (/[A-ZÑ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales, incluido emojis 📝😒";
@@ -101,7 +107,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 // Transformacion del txt a encriptado
                 var texto_encriptado = VIGENERE.encripytVigenere(texto_a_Encriptar, key, idiomasVigenere);
 
-                // Subida a la BD
+                // Subida a la BD, comprbando si es usuario o invitado
                 if (id_Usuario) {
                     await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
                 } else {
@@ -130,7 +136,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 // Transformacion del txt a encriptado
                 var texto_encriptado = HEX.encripytHex(texto_a_Encriptar);
 
-                // Subida a la BD
+                // Subida a la BD, comprobando si es invitado o usuario
                 if (id_Usuario) {
                     await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
                 } else {
@@ -168,7 +174,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 // Transformacion del txt a encriptado
                 var texto_encriptado = BASE_SESENTA_Y_CUATRO.encripytBase64(texto_a_Encriptar);
 
-                // Subida a la BD
+                // Subida a la BD si es invitado o usuario
                 if (id_Usuario) {
                     await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
                 } else {
@@ -187,6 +193,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             default:
+                // Medio default para cuando solo llena la caja de texto
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
                 req.session.aviso = "ERROR 🤨 Al parecer no elegiste ningun modo pero si le diste a enviar *llenaste la caja de texto no mas* 📝😒";
