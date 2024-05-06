@@ -5,7 +5,7 @@ async function getHistoryForUser(id){
     try {
 
         const [results] = await bdConecction.query('SELECT * FROM Encriptaciones WHERE id_usuario = (?)', [parseInt(id)]);
-        return results
+        return results;
     } catch (error) {
         console.error('Algo fue mal al ejecutar el getHistoryForUser(), con error → ', error);
         throw error;

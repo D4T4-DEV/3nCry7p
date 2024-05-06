@@ -58,7 +58,7 @@ async function authenticateRequiered(req, res, next) {
         req.session.avisoLoginSignUp = 'Es posible que haya expirado tu sesión, por seguridad vuelva a iniciar';
         return res.redirect('/iniciar-sesion');
     }
-    // next(); // Permite ejecutar otro middleware o medio
+    //next(); // Permite ejecutar otro middleware o medio
 }
 
 

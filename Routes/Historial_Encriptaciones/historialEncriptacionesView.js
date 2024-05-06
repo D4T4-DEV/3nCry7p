@@ -13,24 +13,18 @@ const {getHistoryForUser} = require('../../Database/Acciones_DB/historial_de_Enc
 // Ruta de renderizado para el historial de encriptaciones 
 router.get('/', authenticateRequiered, async (req, res) => {
 
-    var historial;
-    var aviso = undefined;
-    // const i = await getHistoryForUser(req.session.ID_USER);
-
-    // console.log(i);
-
     try {
-        historial = await getHistoryForUser(req.session.ID_USER);
+        var historial = await getHistoryForUser(req.session.ID_USER);
+        res.render('historialEncriptacion', {
+            encriptaciones: historial != undefined ? historial : 0
+        });
 
     } catch (error) {
         console.log("Error al obtener el historial, usuario: " + req.session.ID_USER + " USERNAME: " + req.session.USER_NAME);
-        var aviso = "Estamos teniendo problemas, por favor intentelo mas tarde...";
+        req.session.aviso = "Estamos teniendo problemas, por favor intentelo mas tarde...";
+        res.redirect('/')
     }
 
-    res.render('historialEncriptacion', {
-        encriptaciones: historial, 
-        avisoError: aviso
-    });
 });
 
 module.exports = router;

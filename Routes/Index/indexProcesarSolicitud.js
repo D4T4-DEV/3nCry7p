@@ -94,7 +94,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 }
 
                 // Comprobar que la key contenga solo letras y no caracteres especiales 
-                if (/[A-ZÑ]/.test(key)) {
+                if (!/^[\w\s]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales, incluido emojis 📝😒";
@@ -128,8 +128,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             case "hex":
-                analizarPruebasRestantes(req, res);
-
+                
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
 
@@ -151,7 +150,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
                 console.log(texto_encriptado);
-
+                analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
 
@@ -165,7 +164,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                analizarPruebasRestantes(req, res);
 
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
@@ -189,6 +187,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
                 console.log(texto_encriptado);
+                analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
 
