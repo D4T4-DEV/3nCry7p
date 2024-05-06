@@ -47,11 +47,9 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 var texto_encriptado = CESAR.encripytCesar(texto_a_Encriptar, desplazamientos)
 
                 // Subida a la BD en modo invitado o usuario
-                if (id_Usuario) {
-                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
-                } else {
-                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasCesar, desplazamientos, null, texto_a_Encriptar, texto_encriptado);
-                }
+                await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "cesar", idiomasCesar, desplazamientos,
+                null, texto_a_Encriptar, texto_encriptado);
+
                 // Paso del resultado a la sesion
                 req.session.textoEncriptado = texto_encriptado;
 
@@ -91,36 +89,31 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                // Comprobar que la key contenga solo letras y no caracteres especiales 
-                if (!/^[\w\s]/.test(key)) {
+                // // Comprobar que la key contenga solo letras y no caracteres especiales 
+                if (/[\w\s]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales, incluido emojis 📝😒";
                     return res.redirect('/');
                 }
 
-                req.session.texto_a_Encriptar = texto_a_Encriptar;
-                req.session.tamanioTexto = texto_a_Encriptar.length;
-
                 // Transformacion del txt a encriptado
                 var texto_encriptado = VIGENERE.encripytVigenere(texto_a_Encriptar, key, idiomasVigenere);
 
-                // Subida a la BD, comprbando si es usuario o invitado
-                if (id_Usuario) {
-                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
-                } else {
-                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, idiomasVigenere, null, key, texto_a_Encriptar, texto_encriptado);
-                }
+                // // Subida a la BD, comprbando si es usuario o invitado
+                await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "vigenere", idiomasVigenere, null,
+                    key, texto_a_Encriptar, texto_encriptado);
 
                 // Paso del resultado a la sesion
                 req.session.textoEncriptado = texto_encriptado;
 
+                // Mensaje de finalizado la encriptación
                 req.session.aviso = "Haz realizado:\n" +
                     "Metodo: Vigenere \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n" +
                     "Con la Key: " + key + "\n";
 
-                console.log(texto_encriptado);
+                // console.log(texto_encriptado);
                 analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
@@ -134,11 +127,8 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 var texto_encriptado = HEX.encripytHex(texto_a_Encriptar);
 
                 // Subida a la BD, comprobando si es invitado o usuario
-                if (id_Usuario) {
-                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
-                } else {
-                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
-                }
+                await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "hex", null, null,
+                null, texto_a_Encriptar, texto_encriptado);
 
                 // Pasamos el texto encriptado a la sesion
                 req.session.textoEncriptado = texto_encriptado;
@@ -147,7 +137,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     "Metodo: Hexadecimal \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
-                console.log(texto_encriptado);
+                // console.log(texto_encriptado);
                 analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
@@ -162,20 +152,15 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-
                 req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.tamanioTexto = texto_a_Encriptar.length;
-
 
                 // Transformacion del txt a encriptado
                 var texto_encriptado = BASE_SESENTA_Y_CUATRO.encripytBase64(texto_a_Encriptar);
 
                 // Subida a la BD si es invitado o usuario
-                if (id_Usuario) {
-                    await loadEncryptBD_UsersSignUp(id_Usuario, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
-                } else {
-                    await loadEncryptBD_Guest(cookieInvitado, metodosEncriptaciones, null, null, null, texto_a_Encriptar, texto_encriptado);
-                }
+                await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "base64", null, null,
+                null, texto_a_Encriptar, texto_encriptado);
 
                 // Pasamos el texto encriptado a la sesion
                 req.session.textoEncriptado = texto_encriptado;
@@ -184,7 +169,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     "Metodo: Base 64 \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
-                console.log(texto_encriptado);
+                // console.log(texto_encriptado);
                 analizarPruebasRestantes(req, res);
                 res.redirect('/');
                 break;
@@ -214,5 +199,19 @@ function analizarPruebasRestantes(req, res) {
         return req.session.pruebasRestantes++;
     }
 }
+
+// APARTADO DE FUNCIONES
+
+// funciones de ambito general
+
+// Carga de la base de datos
+async function subirInformacionModoGuestAndUser(id_usuario, cookieInvitado, tipo_de_encriptacion, idioma, desplazamientos, key, texto_sin_encriptar, texto_encriptado) {
+    if (id_usuario) {
+        await loadEncryptBD_UsersSignUp(id_usuario, tipo_de_encriptacion, idioma, desplazamientos, key, texto_sin_encriptar, texto_encriptado);
+    } else {
+        await loadEncryptBD_Guest(cookieInvitado, tipo_de_encriptacion, idioma, desplazamientos, key, texto_sin_encriptar, texto_encriptado);
+    }
+}
+
 
 module.exports = router;
