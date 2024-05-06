@@ -75,7 +75,7 @@ passport.use(new LocalStrategy({
       return done(null, user);
     } catch (error) {
 
-      avisoLogin = "Estamos experimentando problemas, por favor intentalo más tarde...";
+      avisoLogin = "Estamos experimentando problemas, por favor Inténtalo más tarde...";
 
       // Aspecto para el BACK
       console.log("Se ha experimentado este error: " + error);

@@ -189,7 +189,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
     } catch (error) {
         req.session.tamanioTexto = texto_a_Encriptar.length;
         req.session.texto_a_Encriptar = texto_a_Encriptar;
-        req.session.aviso = "Estamos experimentando problemas, por favor intentalo más tarde...";
+        req.session.aviso = "Estamos experimentando problemas, por favor Inténtalo más tarde...";
         console.log("Error al registrar la encriptacion, con error: " + error + " → BD fuera de linea");
         res.redirect('/');
     }
