@@ -1,0 +1,2 @@
+Aqui irian originalmente la carpeta de rutas debido a que estos interactuan con las vistas 
+y los modelos.
