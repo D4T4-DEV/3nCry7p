@@ -37,9 +37,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     return res.redirect('/');
                 }
 
-                req.session.texto_a_Encriptar = texto_a_Encriptar;
-                req.session.tamanioTexto = texto_a_Encriptar.length;
-
                 // Configuracion del metodo
                 CESAR.idiomAlfabet(idiomasCesar);
 
@@ -51,6 +48,8 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 null, texto_a_Encriptar, texto_encriptado);
 
                 // Paso del resultado a la sesion
+                req.session.tamanioTexto = texto_a_Encriptar.length;
+                req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
@@ -90,10 +89,10 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 }
 
                 // // Comprobar que la key contenga solo letras y no caracteres especiales 
-                if (/[\w\s]/.test(key)) {
+                if (!/[A-ZÑ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
-                    req.session.aviso = "ERROR 🤨 La KEY no debe tener números ni caracteres especiales, incluido emojis 📝😒";
+                    req.session.aviso = "ERROR 🤨 La KEY no debe tener números, espacios en blanco ni caracteres especiales (incluido emojis) 📝😒";
                     return res.redirect('/');
                 }
 
@@ -105,6 +104,8 @@ router.post('/', authenticateGlobal, async (req, res) => {
                     key, texto_a_Encriptar, texto_encriptado);
 
                 // Paso del resultado a la sesion
+                req.session.tamanioTexto = texto_a_Encriptar.length;
+                req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.textoEncriptado = texto_encriptado;
 
                 // Mensaje de finalizado la encriptación
@@ -120,9 +121,6 @@ router.post('/', authenticateGlobal, async (req, res) => {
 
             case "hex":
 
-                req.session.texto_a_Encriptar = texto_a_Encriptar;
-                req.session.tamanioTexto = texto_a_Encriptar.length;
-
                 // Transformacion del txt a encriptado
                 var texto_encriptado = HEX.encripytHex(texto_a_Encriptar);
 
@@ -130,7 +128,9 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "hex", null, null,
                 null, texto_a_Encriptar, texto_encriptado);
 
-                // Pasamos el texto encriptado a la sesion
+                // Paso del resultado a la sesion
+                req.session.tamanioTexto = texto_a_Encriptar.length;
+                req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
@@ -162,7 +162,9 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "base64", null, null,
                 null, texto_a_Encriptar, texto_encriptado);
 
-                // Pasamos el texto encriptado a la sesion
+                // Paso del resultado a la sesion
+                req.session.tamanioTexto = texto_a_Encriptar.length;
+                req.session.texto_a_Encriptar = texto_a_Encriptar;
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
