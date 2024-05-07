@@ -89,7 +89,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 }
 
                 // // Comprobar que la key contenga solo letras y no caracteres especiales 
-                if (!/[A-ZÑ]/.test(key)) {
+                if (/[\s]/.test(key) || /[^A-ZÑ]/.test(key)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
                     req.session.aviso = "ERROR 🤨 La KEY no debe tener números, espacios en blanco ni caracteres especiales (incluido emojis) 📝😒";
