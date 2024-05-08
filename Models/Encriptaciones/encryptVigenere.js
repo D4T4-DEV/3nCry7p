@@ -81,7 +81,6 @@ function encripytVigenere(texto, clave, idioma) {
 
         if (/[a-zñA-ZÑ]/.test(letra)) {
             var claveActual = clave.charAt(desplazamientoCongruente % clave.length);
-            console.log(claveActual)
             var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
             encripytVigenere += encripytCesar.encripytCesar(letra, desplazamiento);
             desplazamientoCongruente++;
@@ -120,12 +119,22 @@ function decrypVigenere(textoCifrado, clave, idioma) {
     // Variable de desplazamiento y su inverso
     var desplazamiento = 0;
     var desplazamientoInverso = 0;
+    var desplazamientoCongruente = 0;
 
     // Recorremos cada elemento de la cadena recibida
     for (var i = 0; i < textoCifrado.length; i++) {
 
-        var letraCifrada = textoCifrado.charAt(i); // Devuelve el caracter en la posicion de i (Básicamente recorre cada uno de los componentes)
-        var claveActual = clave.charAt(i % clave.length);
+        var letra = textoCifrado.charAt(i); // Devuelve la letra de la posición
+
+        if (/[a-zñA-ZÑ]/.test(letra)) {
+            var claveActual = clave.charAt(desplazamientoCongruente % clave.length);
+            var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
+            desplazamientoInverso = (tamanioAlfabeto - desplazamiento) % tamanioAlfabeto;
+            decrypVigenere += encripytCesar.encripytCesar(letra, desplazamientoInverso);
+            desplazamientoCongruente++;
+        } else {
+            decrypVigenere += letra;
+        }
         /*
             Ejemplo:
             mensaje = Bell = Letras = 4
@@ -138,10 +147,11 @@ function decrypVigenere(textoCifrado, clave, idioma) {
             3 mod 3 = 0 -> Devolvemos el primer caracter 
 
             NOTA: Esto se hace para rellenar los espacios vacios que pueda tener la clave o el mensaje
+        
+            desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0); // Calculamos el valor de la clave en valor de la clave en comparacion a la A del codigo ASCII
+            desplazamientoInverso = (tamanioAlfabeto - desplazamiento) % tamanioAlfabeto; // Desplazamiento inverso calculador con x = (tamanio alfabeto - desplazamiento)
+            decrypVigenere += encripytCesar.encripytCesar(letraCifrada, desplazamientoInverso); // Usamos el metodo cesar por estar comprometido el desplazamiento a modo valor ASCII y no a letra normal
         */
-        desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0); // Calculamos el valor de la clave en valor de la clave en comparacion a la A del codigo ASCII
-        var desplazamientoInverso = (tamanioAlfabeto - desplazamiento) % tamanioAlfabeto; // Desplazamiento inverso calculador con x = (tamanio alfabeto - desplazamiento)
-        decrypVigenere += encripytCesar.encripytCesar(letraCifrada, desplazamientoInverso); // Usamos el metodo cesar por estar comprometido el desplazamiento a modo valor ASCII y no a letra normal
     }
     return decrypVigenere;
 }
@@ -153,7 +163,12 @@ module.exports = {
 
 
 // Pruebas
-// console.log(encripytVigenere("Hola😍 mundo°🤣❤️", "LIMON", "EN"));
+// const textoEncrip = encripytVigenere("Hola😍 mundo°🤣❤️", "LIMON", "EN")
+// console.log("Texto encriptado " + textoEncrip);
+
+// const textoDecrip = decrypVigenere(textoEncrip, "LIMON", "EN");
+// console.log("Texto desencriptado de " + textoEncrip + "  igual a " + textoDecrip);
+
 // console.log(decrypVigenere(encripytVigenere("LOREM IPSUM DOLOR SESO", "YY", "ES"), "YY", "ES"))
 
 /*
