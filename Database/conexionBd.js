@@ -15,8 +15,8 @@ const POOL_Connection = mysql2.createPool({
     queueLimit: 0
 });
  
-function getConnectionDB() {
-    return POOL_Connection.promise().getConnection(); // Pasamos el parametro como una promesa y de esta obtenemos la conexion del POOL
+async function getConnectionDB() {
+    return await POOL_Connection.promise().getConnection(); // Pasamos el parametro como una promesa y de esta obtenemos la conexion del POOL
 }
 
 module.exports = {
