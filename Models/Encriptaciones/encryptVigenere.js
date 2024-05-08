@@ -6,12 +6,88 @@ function encripytVigenere(texto, clave, idioma) {
     encripytCesar.idiomAlfabet(idioma);
 
     var encripytVigenere = "";
+    var desplazamientoCongruente = 0;
+
+    /*
+        Explicacion: Cuando usabamos el metodo:
+        
+        function encripytVigenere(texto, clave, idioma) {
+
+            // Decimos a cesar que lenguaje usar
+            encripytCesar.idiomAlfabet(idioma);
+
+            var encripytVigenere = "";
+
+            for (var i = 0; i < texto.length; i++) {
+                var letra = texto.charAt(i);
+                var claveActual = clave.charAt(i % clave.length);
+                var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
+                encripytVigenere += encripytCesar.encripytCesar(letra, desplazamiento);
+            }
+            return encripytVigenere;
+        }
+
+        La i del medio "clave.charAt(i % clave.length)" hacia que si la clave era corta, se complete, considerando
+        el valor del espacio, caracter o numero, cosa que esta "mál", debido a que debemos considerar solo
+        caracteres alfabeticos, teniendo que crear un medio que deba completarse al ser una letra y no otro caracter,
+        de aqui nace el siguiente medio:
+
+        function encripytVigenere(texto, clave, idioma) {
+
+            // Decimos a cesar que lenguaje usar
+            encripytCesar.idiomAlfabet(idioma);
+
+            var encripytVigenere = "";
+
+            for (var i = 0; i < texto.length; i++) {
+                if(/[a-zñA-ZÑ]/.test(letra)){
+                    var claveActual = clave.charAt(desplazamientoCongruente % clave.length);
+                    console.log(claveActual)
+                    var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
+                    encripytVigenere += encripytCesar.encripytCesar(letra, desplazamiento);
+                    desplazamientoCongruente++;
+                }else{
+                    encripytVigenere += letra;
+                }
+            }
+            return encripytVigenere;
+        }
+
+        Este trozo de codigo verifica que solo sean caracteres alfabeticos y en caso de hacerlo la variable
+        "desplazamientoCongruente" se aumentará una vez complete el algoritmo, para que sea posible poder generar 
+        la clave en cada iteración ejemplo de ello:
+
+        HOLA MUNDO 
+
+        CLAVE: LIMON -> 
+
+            Ejemplo:
+            key = LIMON = Letras = 5
+
+            supongamos que estamos en el 0 y iremos hasta el dos 
+            "n" mod tamanioClave
+            "0" mod 5 = 0 -> Devolvemos el mismo caracter L
+            "1" mod 5 = 1 -> Devolvemos el mismo caracter I
+            "2" mod 5 = 2 -> Devolvemos el mismo caracter M
+            "3" mod 5 = 3 -> Devolvemos el mismo caracter O
+            "4" mod 5 = 4 -> Devolvemos el mismo caracter N -> En este punto entra en acción el if, ya que comprueba no el espacio si no la letra M
+
+            "n" ---> Este solo cambiara el valor de cuando se compruebe que realemente fue un caracter
+
+    */
 
     for (var i = 0; i < texto.length; i++) {
-        var letra = texto.charAt(i);
-        var claveActual = clave.charAt(i % clave.length);
-        var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
-        encripytVigenere += encripytCesar.encripytCesar(letra, desplazamiento);
+        var letra = texto.charAt(i); // Devuelve la letra de la posición
+
+        if (/[a-zñA-ZÑ]/.test(letra)) {
+            var claveActual = clave.charAt(desplazamientoCongruente % clave.length);
+            console.log(claveActual)
+            var desplazamiento = claveActual.charCodeAt(0) - 'A'.charCodeAt(0);
+            encripytVigenere += encripytCesar.encripytCesar(letra, desplazamiento);
+            desplazamientoCongruente++;
+        } else {
+            encripytVigenere += letra;
+        }
     }
     return encripytVigenere;
 }
@@ -76,6 +152,8 @@ module.exports = {
 }
 
 
+// Pruebas
+// console.log(encripytVigenere("Hola😍 mundo°🤣❤️", "LIMON", "EN"));
 // console.log(decrypVigenere(encripytVigenere("LOREM IPSUM DOLOR SESO", "YY", "ES"), "YY", "ES"))
 
 /*
