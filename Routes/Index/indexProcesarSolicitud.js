@@ -53,7 +53,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
-                    "Metodo: Cesar \n" +
+                    "Método: Cesar \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n" +
                     "En el idioma: " + idiomasCesar + "\n" +
                     "Con el número de desplazamientos de: " + desplazamientos;
@@ -110,7 +110,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
 
                 // Mensaje de finalizado la encriptación
                 req.session.aviso = "Haz realizado:\n" +
-                    "Metodo: Vigenere \n" +
+                    "Método: Vigenere \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n" +
                     "Con la Key: " + key + "\n";
 
@@ -134,7 +134,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
-                    "Metodo: Hexadecimal \n" +
+                    "Método: Hexadecimal \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
                 // console.log(texto_encriptado);
@@ -148,7 +148,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 if (/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(texto_a_Encriptar)) {
                     req.session.tamanioTexto = texto_a_Encriptar.length;
                     req.session.texto_a_Encriptar = texto_a_Encriptar;
-                    req.session.aviso = "ERROR 🤨 Este metodo no admite emojis 📝😒";
+                    req.session.aviso = "ERROR 🤨 Este método no admite emojis 📝😒";
                     return res.redirect('/');
                 }
 
@@ -168,7 +168,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 req.session.textoEncriptado = texto_encriptado;
 
                 req.session.aviso = "Haz realizado:\n" +
-                    "Metodo: Base 64 \n" +
+                    "Método: Base 64 \n" +
                     "Un texto de: " + texto_a_Encriptar.length + " caracteres\n";
 
                 // console.log(texto_encriptado);
