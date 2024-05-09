@@ -41,7 +41,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 CESAR.idiomAlfabet(idiomasCesar);
 
                 // Transformacion del txt a encriptado
-                var texto_encriptado = CESAR.encripytCesar(texto_a_Encriptar, parseInt(desplazamientos))
+                var texto_encriptado = CESAR.encripytCesar(texto_a_Encriptar, parseInt(desplazamientos));
 
                 // Subida a la BD en modo invitado o usuario
                 await subirInformacionModoGuestAndUser(id_Usuario, cookieInvitado, "cesar", idiomasCesar, desplazamientos,
