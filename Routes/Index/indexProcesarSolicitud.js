@@ -120,6 +120,14 @@ router.post('/', authenticateGlobal, async (req, res) => {
                 break;
 
             case "hex":
+                // Detectamos si este contiene emojis, ya que este no los acepta
+                if (/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/u.test(texto_a_Encriptar)) {
+                    req.session.tamanioTexto = texto_a_Encriptar.length;
+                    req.session.texto_a_Encriptar = texto_a_Encriptar;
+                    req.session.aviso = "ERROR 🤨 Este método no admite emojis 📝😒";
+                    return res.redirect('/');
+                }
+
 
                 // Transformacion del txt a encriptado
                 var texto_encriptado = HEX.encripytHex(texto_a_Encriptar);
