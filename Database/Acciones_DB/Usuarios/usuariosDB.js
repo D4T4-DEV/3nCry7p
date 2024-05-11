@@ -52,7 +52,20 @@ async function updateLoginCounter(id) {
         await bdConecction.query('call verify_and_count_logins(?)', [id]);
         console.log("Se ha registrado correctamente el login del usuario con ID: " + id);
     } catch (error) {
-        console.log("Error al utilizar el procedimiento de la BD, con error " + error);
+        console.log("Error al utilizar el procedimiento Login de la BD, con error " + error);
+    } finally {
+        bdConecction.release();
+    }
+}
+
+async function updateLog_Out(id){
+    const bdConecction = await getConnectionDB(); // Tomamos la conexion
+
+    try {
+        await bdConecction.query('call verify_and_count_log_outs(?)', [id]);
+        console.log("Se ha registrado correctamente el logout del usuario con ID: " + id);
+    } catch (error) {
+        console.log("Error al utilizar el procedimiento logOut de la BD, con error " + error);
     } finally {
         bdConecction.release();
     }
@@ -65,5 +78,6 @@ module.exports = {
     registrarUsuario,
     getUserForUserName,
     getUserForID,
-    updateLoginCounter
+    updateLoginCounter,
+    updateLog_Out
 };

@@ -17,7 +17,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
 // Metodos de DB
-const { getUserForUserName, getUserForID, updateLoginCounter } = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
+const { getUserForUserName, getUserForID, updateLoginCounter,  updateLog_Out} = require('./Database/Acciones_DB/Usuarios/usuariosDB.js');
 
 // Metodo de cifrado
 const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
@@ -25,6 +25,7 @@ const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
 // Variable de aviso para avisos diversos desde el SERVER
 var avisoLogin = undefined;
 var avisoCerrarSesion = undefined;
+var usuarioID = undefined;
 
 // MIDDLEWARES
 
@@ -110,11 +111,10 @@ app.use((req, res, next) => {
   req.session.avisoCerrarSesion = avisoCerrarSesion;
   avisoCerrarSesion = undefined;
 
-
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
-
+  usuarioID = req.session.ID_USER;
   next(); // Damos paso a la ejecucion de otros middlewares
 });
 
@@ -127,6 +127,9 @@ app.use((req, res, next) => {
 
 // Medio get para cerrar sesion
 app.get('/cerrar-sesion', async (req, res) => {
+
+  var logOUT = req.session.RequiereLogOut;
+
   await req.logout(async (err) => {
     if (err) {
       avisoCerrarSesion = "Error al cerrar sesión, por favor intentelo nuevamente..."
@@ -140,6 +143,12 @@ app.get('/cerrar-sesion', async (req, res) => {
       console.log('ESTE PROCESO -> req.session.destroy -> ha finalizado correctamente');
       avisoCerrarSesion = "Se ha cerrado sesión";
     });
+
+    if(logOUT){
+      await updateLog_Out(usuarioID);
+    }
+    usuarioID = undefined;
+    logOUT = undefined;
     res.clearCookie('token');
     res.redirect('/'); // Redirigir a la página principal u otra página de tu elección
   });
