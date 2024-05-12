@@ -22,10 +22,15 @@ const { getUserForUserName, getUserForID, updateLoginCounter,  updateLog_Out} = 
 // Metodo de cifrado
 const { compareHash } = require('./Models/Cifrado_PWD_Usuario/pwd_hash_method');
 
+// Metodo para proteger la pestania de cerrar sesion
+const {authenticateRequiered_LogOut} = require('./Models/autenticacion/autenticacion.js');
+
+
 // Variable de aviso para avisos diversos desde el SERVER
 var avisoLogin = undefined;
 var avisoCerrarSesion = undefined;
 var usuarioID = undefined;
+var CerrarSesion = undefined;
 
 // MIDDLEWARES
 
@@ -114,7 +119,13 @@ app.use((req, res, next) => {
   // Pasamos el valor de la variable creada en el server
   req.session.avisoLogin = avisoLogin; // Pasamos a la sesion
   avisoLogin = undefined; // Devolvemos a su valor origen
-  usuarioID = req.session.ID_USER;
+  usuarioID = req.session.ID_USER; // Obtencion del id del usuario en la sesion
+
+  // verificamos que exista esta variable de sesion
+  // si existe lo asigna a la variable del server
+  if(!req.session.RequiereLogOut){
+    CerrarSesion = req.session.RequiereLogOut;
+  }
   next(); // Damos paso a la ejecucion de otros middlewares
 });
 
@@ -126,9 +137,7 @@ app.use((req, res, next) => {
 });
 
 // Medio get para cerrar sesion
-app.get('/cerrar-sesion', async (req, res) => {
-
-  var logOUT = req.session.RequiereLogOut;
+app.get('/cerrar-sesion', authenticateRequiered_LogOut, async (req, res) => {
 
   await req.logout(async (err) => {
     if (err) {
@@ -144,11 +153,15 @@ app.get('/cerrar-sesion', async (req, res) => {
       avisoCerrarSesion = "Se ha cerrado sesión";
     });
 
-    if(logOUT){
+    // Varificamos que:
+      // -> Cerrar seión contenga un valor (Deberia ser si o si FALSE)
+      // -> usuarioID exista (este viene en la sesion al loguearse)
+    // si no se cumple solo quitamos la sesion y listo
+    if(CerrarSesion === undefined && usuarioID != undefined){
       await updateLog_Out(usuarioID);
     }
     usuarioID = undefined;
-    logOUT = undefined;
+    CerrarSesion = undefined;
     res.clearCookie('token');
     res.redirect('/'); // Redirigir a la página principal u otra página de tu elección
   });

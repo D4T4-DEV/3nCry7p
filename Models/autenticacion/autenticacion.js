@@ -53,7 +53,7 @@ async function authenticateGlobal(req, res, next) {
     next(); // Permite ejecutar otro middleware o medio
 }
 
-// Proteger un medio especifico
+// Proteger un medio especifico (VISTAS)
 async function authenticateRequiered(req, res, next) {
     // Verifica si hay un token en las cookies de la solicitud
     const cookie = req.cookies.token;
@@ -85,15 +85,48 @@ async function authenticateRequiered(req, res, next) {
     //next(); // Permite ejecutar otro middleware o medio
 }
 
+// CERRAR SESION
+async function authenticateRequiered_LogOut(req, res, next) {
+    // Verifica si hay un token en las cookies de la solicitud
+    const cookie = req.cookies.token;
+
+    // Si no hay cookie, redirige al usuario al login
+
+    if (!cookie) {
+        req.session.LogOutWithout = 'No se puede cerrar sesión si no iniciaste sesión';
+        return res.redirect('/');
+    }
+
+    try {
+        // Verifica el token usando la clave secreta
+        jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET);
+        next();
+    } catch (err) {
+
+        if (logOutBD) {
+            await updateLog_Out(req.session.ID_USER); // Medio para poder cerrar sesión
+            logOutBD = false;
+        }
+
+        // Variable de sesión para cuidar que no se registre otro logout
+        req.session.RequiereLogOut = logOutBD;
+
+        req.session.avisoLoginSignUp = 'Es posible que haya expirado tu sesión, por seguridad vuelva a iniciar';
+        return res.redirect('/iniciar-sesion');
+    }
+}
+
+
 
 // Generar un toquen con JTW
-function generateToken(userId) {
+function generateToken(user_id) {
     // Crea un token con el ID de usuario y una clave secreta
-    return jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10' }); // expiresIn-> "segundos: 3600" "minutos: 60m" "Horas: 1h"
+    return jwt.sign({ user_id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1H' }); // expiresIn-> "segundos: 3600" "minutos: 60m" "Horas: 1h"
 }
 
 module.exports = {
     authenticateGlobal,
     generateToken,
-    authenticateRequiered
+    authenticateRequiered,
+    authenticateRequiered_LogOut
 }

@@ -16,7 +16,7 @@ router.post('/', authenticateGlobal, async (req, res) => {
     const { texto_a_Encriptar, metodosEncriptaciones, idiomasCesar, idiomasVigenere, desplazamientos, key } = req.body; // Obtiene el valor de los formularios
 
     const cookieInvitado = req.cookies['connect.sid']; // Cookie generada por Express
-    const id_Usuario = req.session.ID_USER; // 
+    const id_Usuario = req.session.ID_USER; // ID de la sesion al loguearse
 
     try {
         switch (metodosEncriptaciones) {

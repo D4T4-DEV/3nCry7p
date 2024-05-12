@@ -53,6 +53,14 @@ block content
                 h1(class="etiqueta-texto-encriptado") Texto encriptado 💀🏴‍☠️
                     .text-area-contenedor-encriptado
                         textarea(name="textoEncriptado", readonly="readonly" id='textarea-encrip-dos' placeholder="Aquí estará tu texto...📝📝")=textoEncriptado
+        
+        if quizoCerrarSesion
+            div#snackbar= quizoCerrarSesion
+                script.
+                    const x = document.getElementById("snackbar");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
+
         if aviso || avisoCerrarSesion || avisoLoginEstado || mensjeInicio
             div#snackbar= aviso || avisoCerrarSesion || avisoLoginEstado || mensjeInicio
                 script.

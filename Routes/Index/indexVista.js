@@ -20,9 +20,11 @@ router.get('/', async (req, res) => {
     var avisoCerrarSesion = req.session.avisoCerrarSesion;
     var avisoLoginEstado = req.session.avisoLoginEstado;
     var leyoElLeeme = req.session.entroALeeme;
+    var quizoCerrarSesion = req.session.LogOutWithout;
 
     // Borramos la variable de la sesion
     delete req.session.avisoLoginEstado;
+    delete req.session.LogOutWithout;
 
     if(!usuario && !leyoElLeeme){
         mensjeInicio = "Le recomendamos ir al apartado → Leeme...";
@@ -40,7 +42,8 @@ router.get('/', async (req, res) => {
         aviso: aviso,
         avisoCerrarSesion: avisoCerrarSesion,
         avisoLoginEstado: avisoLoginEstado,
-        mensjeInicio: mensjeInicio
+        mensjeInicio: mensjeInicio,
+        quizoCerrarSesion: quizoCerrarSesion
     });
 });
 
