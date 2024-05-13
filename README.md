@@ -22,13 +22,13 @@ Tendrás que cumplir con los siguientes medios:
             - nodemon
             - npm-run-all
 
-- Tener instalador MySQL Community Server y MySQL Workbench
+- Tener instalado MySQL Community Server y MySQL Workbench
     - Crear la Base de datos que encontrarás en el directorio de `3nCry7p\Database\Creacion_DB\base de datos.sql`, esto trae lo necesario para que se registre correctamente en la Base de datos 
 
 - Tener un archivo `.env` en la raíz del proyecto en donde debera contener los siguientes valores:
     - `MYSQL_HOST` → Corresponde al host usualmente `localhost` o  `127.0.0.1`.
-    - `MYSQL_USER` → Corresponde al usuario con el que se creo la base de datos.
-    - `MYSQL_PWD` → Corresponde a la contraseña del usuario de la base de datos.
+    - `MYSQL_USER` → Corresponde al usuario con el que se creo el server de la base de datos o uno creado propio.
+    - `MYSQL_PWD` → Corresponde a la contraseña del usuario existente en la base de datos o uno creado propio.
     - `MYSQL_DATABASE` → Corresponde al nombre de la base de datos, en nuestro caso `encripta_web`.
     - `PASSWORD_SALT_ROUNDS` → Corresponde a las vueltas que tomara `bcrypt` para encriptar la contraseña del usuario.
     - `ACCESS_TOKEN_SECRET` → Corresponde a la palabra secreta que usará `passport`.
