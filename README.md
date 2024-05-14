@@ -23,7 +23,7 @@ Tendrás que cumplir con los siguientes medios:
             - npm-run-all
 
 - Tener instalado MySQL Community Server y MySQL Workbench
-    - Crear la Base de datos que encontrarás en el directorio de `3nCry7p\Database\Creacion_DB\base de datos.sql`, esto trae lo necesario para que se registre correctamente en la Base de datos 
+    - Crear la Base de datos que encontrarás en el directorio de `3nCry7p\Database\Creacion_DB\base de datos.sql`, esto trae lo necesario para la creación de la Base de datos y su uso
 
 - Tener un archivo `.env` en la raíz del proyecto en donde debera contener los siguientes valores:
     - `MYSQL_HOST` → Corresponde al host usualmente `localhost` o  `127.0.0.1`.
